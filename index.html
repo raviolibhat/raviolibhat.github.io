@@ -476,10 +476,14 @@ angular.module('my.directives', ['my.services'])
 <h3>
 <a id="directives" class="anchor" href="#directives" aria-hidden="true"><span class="octicon octicon-link"></span></a>Directives</h3>
 
-<p>Using inheritance and/or mixins: By inheriting directive controllers as opposed to directives: see myReport directive above.
-Using the 'require' parameter in the directive definition, for directive controller dependencies.
-Directive wrapping: <a href="http://thaiat.github.io/blog/2014/03/10/extending-an-existing-directive-in-angularjs/">http://thaiat.github.io/blog/2014/03/10/extending-an-existing-directive-in-angularjs/</a>
-Decorator pattern:</p>
+<ul>
+<li>Using inheritance and/or mixins: By inheriting directive controllers as opposed to directives: see myReport directive above.</li>
+<li>Using the 'require' parameter in the directive definition, for directive controller dependencies.</li>
+<li>Directive wrapping: <a href="http://thaiat.github.io/blog/2014/03/10/extending-an-existing-directive-in-angularjs/">http://thaiat.github.io/blog/2014/03/10/extending-an-existing-directive-in-angularjs/</a>
+</li>
+</ul>
+
+<p>Decorator pattern:</p>
 
 <pre><code>angular.module('my', [])
     .decorator('myReportDirective', function ($delegate) {
