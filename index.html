@@ -347,8 +347,9 @@ the finger that corresponds to the LED.  Then, the lit LED turns off and another
 
 <ul>
 <li>Energy: exists everywhere (generic Class)</li>
+<li>SolarEnergy: type of Energy (SubClass)</li>
 <li>Light: tangible Energy (Instance)</li>
-<li>Sunlight: tangible Energy (SubInstance, yeah!)</li>
+<li>Sunlight: tangible Energy (SubInstance)</li>
 <li>Universe: provider of Energy (Service)</li>
 <li>Emit: action without binding (Class Function)</li>
 <li>Sun: provider of Sunlight (SubService)</li>
@@ -360,18 +361,31 @@ the finger that corresponds to the LED.  Then, the lit LED turns off and another
 </ul>
 
 <h3>
+<a id="javascript-oo" class="anchor" href="#javascript-oo" aria-hidden="true"><span class="octicon octicon-link"></span></a>JavaScript OO</h3>
+
+<ul>
+<li>Everything's derived from Object, including Class and Instance</li>
+<li>Allows for flexibility</li>
+<li>Allows for SubInstance in addition to SubClass</li>
+<li>Multiple inheritance by mixins</li>
+</ul>
+
+<h3>
+<a id="python-oo-im-not-an-expert" class="anchor" href="#python-oo-im-not-an-expert" aria-hidden="true"><span class="octicon octicon-link"></span></a>Python OO (I'm not an expert)</h3>
+
+<ul>
+<li>Class is separate from Instance</li>
+<li>Does not allow for SubInstance</li>
+<li>Multiple inheritance (for Class) is built into syntax</li>
+</ul>
+
+<h3>
 <a id="when-oo-breaks-down" class="anchor" href="#when-oo-breaks-down" aria-hidden="true"><span class="octicon octicon-link"></span></a>When OO breaks down</h3>
 
 <ul>
 <li>Deep inheritance hierarchies that create rigid dependencies that are very difficult to break when requirements change</li>
-</ul>
-
-<h3>
-<a id="recommendations-for-building-commercial-software" class="anchor" href="#recommendations-for-building-commercial-software" aria-hidden="true"><span class="octicon octicon-link"></span></a>Recommendations for building commercial software</h3>
-
-<ul>
-<li>Favor simplicity over complexity</li>
-<li>Leverage the cutting edge of open-source, not the bleeding edge</li>
+<li>JavaScript's flexibility may alleviate rigidity by providing crutches while the hierarchies are reworked</li>
+<li>In Python, maybe preplan for retiring old stuff and starting anew: Build shallow.</li>
 </ul>
 
       <footer class="site-footer">
