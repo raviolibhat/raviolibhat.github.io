@@ -440,7 +440,7 @@ angular.module('my.directives', ['my.services'])
 <h3>
 <a id="services" class="anchor" href="#services" aria-hidden="true"><span class="octicon octicon-link"></span></a>Services</h3>
 
-<p>Using inheritance and/or mixins:</p>
+<p>Using inheritance:</p>
 
 <pre><code>angular.module('my.services', []).factory('mySubClass', ['myClass', function() {
 
@@ -487,6 +487,7 @@ angular.module('my.directives', ['my.services'])
 
 <pre><code>angular.module('my', [])
     .decorator('myReportDirective', function ($delegate) {
+
         // do things
         return $delegate;
     });
