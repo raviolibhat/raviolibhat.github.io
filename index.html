@@ -345,58 +345,108 @@ angular.module('my.services', []).factory('myLocation', ['$rootScope', '$locatio
 <h3>
 <a id="controllers" class="anchor" href="#controllers" aria-hidden="true"><span class="octicon octicon-link"></span></a>Controllers</h3>
 
-<ul>
-<li>
 <p>Using inheritance and/or mixins:</p>
 
-<p>angular.module('my.services', []).factory('myClass', function() {</p>
+<pre><code>angular.module('my.services', []).factory('myClass', function() {
 
-<pre><code>var BaseController = function() {
+    var BaseController = function() {
 
-    this.modelDef = null;
-};
-BaseController.prototype.setupModel = function() {
-
-    var process = function(modelDef) {
-        // process modelDef into model
+        this.modelDef = null;
     };
-    this.model = process(this.modelDef);
-};
+    BaseController.prototype.setupModel = function() {
 
-return {
-    BaseController: BaseController
-};
+        var process = function(modelDef) {
+            // process modelDef into model
+        };
+        this.model = process(this.modelDef);
+    };
+
+    return {
+        BaseController: BaseController
+    };
+});
+
+angular.module('my.services', []).factory('myMixin', ['restData', function(restData) {
+
+    var tabulate = function() {
+        // tabulate the list-type models from this.modelDefs
+    };
+
+    var restify = function() {
+        // call back-end services via restData service
+    };
+
+    // no prototype functions
+    return {
+        tabulate: tabulate,
+        restify: restify
+    };
+}]);
+
+angular.module('my.directives', ['my.services'])
+    .directive('myReport', ['myClass', function(myClass) {
+
+        var SubController = function($filter, myMixin) {
+
+            myClass.BaseController.apply(this);
+
+            angular.extend(this, myMixin); // mix in to controller-bound scope
+
+            this.modelDef = {
+                // set of model definitions
+            };
+            this.setupModel();
+        };
+        SubController.prototype = Object.create(myClass.BaseController.prototype);
+        SubController.$inject = ['$filter', 'myMixin'];
+
+        return {
+            scope: {
+                // scope props
+            },
+            templateUrl: '/path/file.html',
+
+            controller: SubController,
+            controllerAs: 'ctrl',
+            bindToController: true,
+
+            link: function ($scope, $element, $attrs) {
+                // do things
+            }
+        };
+    }]);
 </code></pre>
 
-<p>});</p>
+<p>Decorator pattern:</p>
 
-<p>angular.module('my.services', []).factory('myMixin', ['restData', function(restData) {</p>
+<pre><code>angular.module('my', ['my.services'])
+    .decorator('$controller', ['myMixin', '$delegate', function (myMixin, $delegate) {
 
-<pre><code>var tabulate = function() {
-    // tabulate the list-type models from this.modelDefs
-};
+        return function (constructor, locals) {
 
-var restify = function() {
-    // call back-end services via restData service
-};
+            var controller = $delegate.apply(null, arguments);
 
-// no prototype functions
-return {
-    tabulate: tabulate,
-    restify: restify
-};
+            return angular.extend(function () {
+
+                return angular.extend(controller(), myMixin); // mix in to controller-bound scopes
+
+                // one can also do things to the instance of controller() based on the type of 'constructor'
+
+            }, controller);
+        };
+    }]);
 </code></pre>
 
-<p>}]);</p>
+<h3>
+<a id="services" class="anchor" href="#services" aria-hidden="true"><span class="octicon octicon-link"></span></a>Services</h3>
 
-<p>angular.module('my.directives', ['my.services'])
-    .directive('myReport', ['myClass', function(myClass) {</p>
+<p>Using inheritance and/or mixins:</p>
 
-<pre><code>    var SubController = function($filter, myMixin) {
+<pre><code>angular.module('my.services', []).factory('mySubClass', ['myClass', function() {
+
+    var SubController = function($filter) {
 
         myClass.BaseController.apply(this);
-
-        angular.extend(this, myMixin); // mix in to controller-bound scope
 
         this.modelDef = {
             // set of model definitions
@@ -404,108 +454,39 @@ return {
         this.setupModel();
     };
     SubController.prototype = Object.create(myClass.BaseController.prototype);
-    SubController.$inject = ['$filter', 'myMixin'];
 
     return {
-        scope: {
-            // scope props
-        },
-        templateUrl: '/path/file.html',
+        SubController: SubController
+    };
+}]);
+</code></pre>
 
-        controller: SubController,
-        controllerAs: 'ctrl',
-        bindToController: true,
+<p>Decorator pattern:</p>
 
-        link: function ($scope, $element, $attrs) {
+<pre><code>angular.module('my', [])
+    .decorator('myService', function ($delegate) {
+
+        return function() {
             // do things
+            return $delegate();
         }
-    };
-}]);
+    });
 </code></pre>
-</li>
-<li>
-<p>Decorator pattern:</p>
-
-<p>angular.module('my', ['my.services'])
-    .decorator('$controller', ['myMixin', '$delegate', function (myMixin, $delegate) {</p>
-
-<pre><code>    return function (constructor, locals) {
-
-        var controller = $delegate.apply(null, arguments);
-
-        return angular.extend(function () {
-
-            return angular.extend(controller(), myMixin); // mix in to controller-bound scopes
-
-            // one can also do things to the instance of controller() based on the type of 'constructor'
-
-        }, controller);
-    };
-}]);
-</code></pre>
-</li>
-</ul>
-
-<h3>
-<a id="services" class="anchor" href="#services" aria-hidden="true"><span class="octicon octicon-link"></span></a>Services</h3>
-
-<ul>
-<li>
-<p>Using inheritance and/or mixins:</p>
-
-<p>angular.module('my.services', []).factory('mySubClass', ['myClass', function() {</p>
-
-<pre><code>var SubController = function($filter) {
-
-    myClass.BaseController.apply(this);
-
-    this.modelDef = {
-        // set of model definitions
-    };
-    this.setupModel();
-};
-SubController.prototype = Object.create(myClass.BaseController.prototype);
-
-return {
-    SubController: SubController
-};
-</code></pre>
-
-<p>}]);</p>
-</li>
-<li>
-<p>Decorator pattern:</p>
-
-<p>angular.module('my', [])
-    .decorator('myService', function ($delegate) {</p>
-
-<pre><code>    return function() {
-        // do things
-        return $delegate();
-    }
-});
-</code></pre>
-</li>
-</ul>
 
 <h3>
 <a id="directives" class="anchor" href="#directives" aria-hidden="true"><span class="octicon octicon-link"></span></a>Directives</h3>
 
-<ul>
-<li>Using inheritance and/or mixins: By inheriting directive controllers as opposed to directives: see myReport directive above.</li>
-<li>Using the 'require' parameter in the directive definition, for directive controller dependencies.</li>
-<li>Directive wrapping: <a href="http://thaiat.github.io/blog/2014/03/10/extending-an-existing-directive-in-angularjs/">http://thaiat.github.io/blog/2014/03/10/extending-an-existing-directive-in-angularjs/</a>
-</li>
-<li>
-<p>Decorator pattern:</p>
+<p>Using inheritance and/or mixins: By inheriting directive controllers as opposed to directives: see myReport directive above.
+Using the 'require' parameter in the directive definition, for directive controller dependencies.
+Directive wrapping: <a href="http://thaiat.github.io/blog/2014/03/10/extending-an-existing-directive-in-angularjs/">http://thaiat.github.io/blog/2014/03/10/extending-an-existing-directive-in-angularjs/</a>
+Decorator pattern:</p>
 
-<p>angular.module('my', [])
+<pre><code>angular.module('my', [])
     .decorator('myReportDirective', function ($delegate) {
         // do things
         return $delegate;
-    });</p>
-</li>
-</ul>
+    });
+</code></pre>
 
 <p>Note: There is no $directive service like there is $controller (above), so you can't blanket all directives this way.</p>
 
