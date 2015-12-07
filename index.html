@@ -345,6 +345,8 @@ the finger that corresponds to the LED.  Then, the lit LED turns off and another
 <h3>
 <a id="controllers" class="anchor" href="#controllers" aria-hidden="true"><span class="octicon octicon-link"></span></a>Controllers</h3>
 
+<p>Using prototypal inheritance and/or mixins:</p>
+
 <pre><code>angular.module('my.services', []).factory('myMixin', ['restData', function(restData) {
 
     var tabulate = function() {
@@ -381,7 +383,7 @@ angular.module('my.services', []).factory('myClass', function() {
 });
 
 angular.module('my.directives', ['my.services'])
-    .directive('myDirective', ['myClass', function(myClass) {
+    .directive('myReport', ['myClass', function(myClass) {
 
         var SubController = function($filter, myMixin) {
 
@@ -412,10 +414,11 @@ angular.module('my.directives', ['my.services'])
             }
         };
     }]);
+</code></pre>
 
+<p>Decorator pattern:</p>
 
-
-angular.module('my', [])
+<pre><code>angular.module('my', [])
     .decorator('$controller', function ($delegate) {
 
         return function (constructor, locals) {
@@ -439,20 +442,48 @@ angular.module('my', [])
 <h3>
 <a id="directives" class="anchor" href="#directives" aria-hidden="true"><span class="octicon octicon-link"></span></a>Directives</h3>
 
+<p>Using prototypal inheritance and/or mixins: See myDirective above, where you inherit directive controllers.</p>
+
+<p>I have not had a need to do this, but it looks neat: <a href="http://thaiat.github.io/blog/2014/03/10/extending-an-existing-directive-in-angularjs/">Directive wrapping</a></p>
+
+<p>Decorator pattern:</p>
+
+<pre><code>angular.module('my', [])
+    .decorator('myReportDirective', function ($delegate) {
+
+        return function (constructor, locals) {
+
+            var controller = $delegate.apply(null, arguments);
+
+            return angular.extend(function () {
+
+                locals.$scope.common = true; // some stuff
+
+                return controller();
+
+            }, controller);
+        };
+    });
+</code></pre>
+
 <h3>
 <a id="javascript-oo" class="anchor" href="#javascript-oo" aria-hidden="true"><span class="octicon octicon-link"></span></a>JavaScript OO</h3>
 
-<p>1 Everything's derived from Object, including Class and Instance
-1 Allows for SubInstances in addition to SubClasses
-1 Multiple inheritance by mixins, i.e. copy stuff over: works due to the two points above
-1 Allows for flexibility</p>
+<ul>
+<li>Everything's derived from Object, including Class and Instance</li>
+<li>Allows for SubInstances in addition to SubClasses</li>
+<li>Multiple inheritance by mixins, i.e. copy stuff over: works due to the two points above</li>
+<li>Flexible</li>
+</ul>
 
 <h3>
 <a id="python-oo-im-not-an-expert" class="anchor" href="#python-oo-im-not-an-expert" aria-hidden="true"><span class="octicon octicon-link"></span></a>Python OO (I'm not an expert)</h3>
 
-<p>1 Class is separate from Instance
-1 Does not allow for SubInstances
-1 Multiple inheritance (for Class) is built into syntax</p>
+<ul>
+<li>Class is separate from Instance</li>
+<li>Does not allow for SubInstances</li>
+<li>Multiple inheritance (for Class) is built into syntax</li>
+</ul>
 
 <h3>
 <a id="when-oo-breaks-down" class="anchor" href="#when-oo-breaks-down" aria-hidden="true"><span class="octicon octicon-link"></span></a>When OO breaks down</h3>
