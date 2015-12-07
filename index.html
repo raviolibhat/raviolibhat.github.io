@@ -110,6 +110,122 @@ Example actions:</p>
 <p>When components are destroyed, any parameters they defined are removed from locationModel automatically.
 URL parameters with default values, set with register(), are hidden from the URL.</p>
 
+<p>Code:</p>
+
+<pre><code>// used to provide browser history support: two-way binds the location params with a model
+angular.module('my.services', []).factory('myLocation', ['$rootScope', '$location', function($rootScope, $location) {
+
+    var locationModel = {};
+    $rootScope.locationModel = locationModel;
+
+    var paramDefaults = {};
+
+    var updateLocationModel = function() {
+
+        var locationParams = $location.search();
+
+        // take location params and update the model, setting defaults as needed
+        for (var param in paramDefaults) {
+
+            if (param in locationParams) {
+                locationModel[param] = (typeof paramDefaults[param] == "number") ? parseInt(locationParams[param]) : locationParams[param];
+            }
+            else {
+                locationModel[param] = paramDefaults[param];
+            }
+        }
+
+        // copy any remaining non-default location params
+        for (var param in locationParams) {
+
+            if (!(param in paramDefaults)) {
+                locationModel[param] = locationParams[param];
+            }
+        }
+    };
+
+    var updateLocationSearch = function() {
+
+        var replaceLocation = true;
+        var oldLocationParams = $location.search();
+        var locationParams = {};
+
+        // only include non-default parameters in location.search
+        for (var param in paramDefaults) {
+
+            if (locationModel[param] != paramDefaults[param]) {
+                locationParams[param] = locationModel[param];
+
+                if (locationParams[param] != oldLocationParams[param]) {
+                    replaceLocation = false;
+                }
+            }
+        }
+
+        // also include any remaining params
+        for (var param in locationModel) {
+
+            if (!(param in paramDefaults)) {
+                locationParams[param] = locationModel[param];
+
+                if (locationParams[param] != oldLocationParams[param]) {
+                    replaceLocation = false;
+                }
+            }
+        }
+
+        if (Object.keys(locationParams).length == 0) { // prevent an infinite digest (see Angular issues 9635 and 10228)... remove after Angular upgrade fixes bug.
+            return;
+        }
+
+        if (replaceLocation) {
+            $location.replace();
+        }
+
+        $location.search(locationParams);
+    };
+
+    var registrations = 0;
+    var deregistrationToFunction = null;
+    var deregistrationFroFunction = null;
+
+    return {
+
+        register: function($scope, scopeParamDefaults) {
+
+            angular.extend(paramDefaults, scopeParamDefaults);
+
+            updateLocationModel();
+
+            if (registrations == 0) {
+                // bind location.search params to model
+                deregistrationToFunction = $rootScope.$on('$locationChangeStart', updateLocationModel);
+
+                // bind model to location.search params
+                deregistrationFroFunction = $rootScope.$watchCollection("ns.locationModel", updateLocationSearch);
+            }
+
+            registrations++;
+
+            $scope.$on("$destroy", function() {
+
+                for (var param in scopeParamDefaults) {
+                    delete locationModel[param];
+                    delete paramDefaults[param];
+                }
+
+                registrations--;
+
+                if (registrations == 0) {
+                    deregistrationToFunction();
+                    deregistrationFroFunction();
+                }
+            });
+        }
+    };
+}])
+</code></pre>
+
 <p>Contracts:</p>
 
 <ul>
