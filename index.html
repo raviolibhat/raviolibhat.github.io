@@ -32,10 +32,10 @@
 <li>Educated in <em>the</em> full-stack: Low-level microchip design, processor architecture, web: back-end, front-end, UI/UX.</li>
 <li>Jack-of-all-trades? Not really.</li>
 <li>
-<strong>Web Architect</strong>? Love it. Going on several years.</li>
-<li>Front-end (my preferred zone): Visually appealing, immediate gratification, bounded by device size (2D; for now)</li>
-<li>Back-end (occasional forays): Delayed gratification, unbounded</li>
-<li>Microchips/Hardware: Heavily delayed gratification, 'nuf said</li>
+<strong>Web Architect</strong>? Going on several years.</li>
+<li>Front-end (my preferred zone): Visually appealing, immediate gratification, human interaction.</li>
+<li>Back-end (occasional forays): Delayed gratification, solutions can get unbounded, researchy.</li>
+<li>Microchips/Hardware: Heavily delayed gratification, 'nuf said for me.</li>
 <li>Technical debt collector</li>
 </ul>
 
@@ -71,9 +71,49 @@
 <ul>
 <li>ngRoute module</li>
 <li>External ui-router package</li>
-<li>Leveraging the $location service (the winner)</li>
+<li>Leveraging $location (the winner)</li>
 <li>Vanilla JavaScript, non-Angular</li>
 </ul>
+
+<h3>
+<a id="how" class="anchor" href="#how" aria-hidden="true"><span class="octicon octicon-link"></span></a>How?</h3>
+
+<p>Remember: Supporting older browsers means no HTML5 History API</p>
+
+<p>Basic URL format:
+<code>http://host/path#?param1=value1&amp;param2=value2&amp;paramN=valueN</code>
+Examples:</p>
+
+<ul>
+<li><code>?view=productA</code></li>
+<li><code>?view=productA&amp;subview=report</code></li>
+<li><code>?view=productA&amp;subview=report&amp;sort=date</code></li>
+<li><code>?view=productA&amp;subview=detail</code></li>
+<li><code>?view=productB&amp;subview=detail</code></li>
+<li><code>?view=productB&amp;subview=detail&amp;row=123</code></li>
+</ul>
+
+<p>Entities:</p>
+
+<ul>
+<li>Location model: contains the name/value pairs</li>
+<li>Root scope: contains the Location model</li>
+<li>Location service: Built on $location, exposes a register() API</li>
+<li>Child scopes</li>
+</ul>
+
+<p>Components (directives) that use browser navigation, define URL parameters by using the Location service's register().
+All bindings to such parameters by any component are done on the Location model.
+Example actions:</p>
+
+<ul>
+<li>Switch views based on URL parameter 'view': ng-switch on root.locationModel.view, target productA vs productB etc.</li>
+<li>Set sort column indication on a detail table: ng-class on root.locationModel.sort</li>
+<li>More complex actions: $watch a subset of parameters in root.locationModel</li>
+</ul>
+
+<p>When components are destroyed, any parameters they defined are removed from locationModel automatically.
+URL parameters with default values, set with register(), are hidden from the URL.</p>
 
 <h3>
 <a id="derived-goals" class="anchor" href="#derived-goals" aria-hidden="true"><span class="octicon octicon-link"></span></a>Derived Goals</h3>
@@ -89,33 +129,6 @@
 <li>Internal application (non-URL) routing</li>
 <li>Object-oriented URL routing</li>
 <li>Complexity</li>
-</ul>
-
-<h3>
-<a id="how" class="anchor" href="#how" aria-hidden="true"><span class="octicon octicon-link"></span></a>How?</h3>
-
-<p>Remember: Supporting older browsers means no HTML5 History API</p>
-
-<p>Basic URL format:
-<code>http://host/path#?name1=value1&amp;name2=value2&amp;nameN=valueN</code>
-Examples:</p>
-
-<ul>
-<li><code>?view=productA</code></li>
-<li><code>?view=productA&amp;subview=report</code></li>
-<li><code>?view=productA&amp;subview=report&amp;type=pdf</code></li>
-<li><code>?view=productA&amp;subview=detail</code></li>
-<li><code>?view=productB&amp;subview=detail</code></li>
-<li><code>?view=productB&amp;subview=detail&amp;row=123</code></li>
-</ul>
-
-<p>Entities:</p>
-
-<ul>
-<li>Location model: contains the name/value pairs</li>
-<li>Root scope: contains the Location model</li>
-<li>Location service: Built on $location</li>
-<li>Child scopes</li>
 </ul>
 
 <hr>
