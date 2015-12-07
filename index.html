@@ -340,52 +340,128 @@ the finger that corresponds to the LED.  Then, the lit LED turns off and another
 <hr>
 
 <h2>
-<a id="inheritance-patterns-in-javascript-and-angularjs" class="anchor" href="#inheritance-patterns-in-javascript-and-angularjs" aria-hidden="true"><span class="octicon octicon-link"></span></a>Inheritance patterns in JavaScript and AngularJS</h2>
+<a id="inheritance-patterns-in-javascript-and-angularjs-and-some-python" class="anchor" href="#inheritance-patterns-in-javascript-and-angularjs-and-some-python" aria-hidden="true"><span class="octicon octicon-link"></span></a>Inheritance patterns in JavaScript and AngularJS (and some Python)</h2>
 
 <h3>
-<a id="solar-energy-analogy" class="anchor" href="#solar-energy-analogy" aria-hidden="true"><span class="octicon octicon-link"></span></a>Solar Energy analogy:</h3>
+<a id="controllers" class="anchor" href="#controllers" aria-hidden="true"><span class="octicon octicon-link"></span></a>Controllers</h3>
 
-<ul>
-<li>Energy: exists everywhere (generic Class)</li>
-<li>SolarEnergy: type of Energy (SubClass)</li>
-<li>Light: tangible Energy (Instance)</li>
-<li>Sunlight: tangible Energy (SubInstance)</li>
-<li>Universe: provider of Energy (Service)</li>
-<li>Emit: action without binding (Class Function)</li>
-<li>Sun: provider of Sunlight (SubService)</li>
-<li>Sun Emit: action with binding (Instance Method)</li>
-<li>Solarcell: Component (Directive)</li>
-<li>AdvancedCell: Component (SubDirective)</li>
-<li>Absorb: action without binding (Class Function)</li>
-<li>Solarcell Absorb: action with binding (Instance Method)</li>
-</ul>
+<pre><code>angular.module('my.services', []).factory('myMixin', ['restData', function(restData) {
+
+    var tabulate = function() {
+        // tabulate the list-type models from this.modelDefs
+    };
+
+    var restify = function() {
+        // call back-end services via restData service
+    };
+
+    return {
+        tabulate: tabulate,
+        restify: restify
+    };
+}]);
+
+angular.module('my.services', []).factory('myClass', function() {
+
+    var BaseController = function() {
+
+        this.modelDef = null;
+    };
+    BaseController.prototype.setupModel = function() {
+
+        var process = function(modelDef) {
+            // process modelDef into model
+        };
+        this.model = process(this.modelDef);
+    };
+
+    return {
+        BaseController: BaseController
+    };
+});
+
+angular.module('my.directives', ['my.services'])
+    .directive('myDirective', ['myClass', function(myClass) {
+
+        var SubController = function($filter, myMixin) {
+
+            myClass.BaseController.apply(this);
+
+            angular.extend(this, myMixin);
+
+            this.modelDef = {
+                // set of model definitions
+            };
+            this.setupModel();
+        };
+        SubController.prototype = Object.create(myClass.BaseController.prototype);
+        SubController.$inject = ['$filter', 'myMixin'];
+
+        return {
+            scope: {
+                // scope props
+            },
+            templateUrl: '/path/file.html',
+
+            controller: SubController,
+            controllerAs: 'ctrl',
+            bindToController: true,
+
+            link: function ($scope, $element, $attrs) {
+                // do stuff
+            }
+        };
+    }]);
+
+
+
+angular.module('my', [])
+    .decorator('$controller', function ($delegate) {
+
+        return function (constructor, locals) {
+
+            var controller = $delegate.apply(null, arguments);
+
+            return angular.extend(function () {
+
+                locals.$scope.common = true; // some stuff
+
+                return controller();
+
+            }, controller);
+        };
+    });
+</code></pre>
+
+<h3>
+<a id="services" class="anchor" href="#services" aria-hidden="true"><span class="octicon octicon-link"></span></a>Services</h3>
+
+<h3>
+<a id="directives" class="anchor" href="#directives" aria-hidden="true"><span class="octicon octicon-link"></span></a>Directives</h3>
 
 <h3>
 <a id="javascript-oo" class="anchor" href="#javascript-oo" aria-hidden="true"><span class="octicon octicon-link"></span></a>JavaScript OO</h3>
 
-<ul>
-<li>Everything's derived from Object, including Class and Instance</li>
-<li>Allows for flexibility</li>
-<li>Allows for SubInstance in addition to SubClass</li>
-<li>Multiple inheritance by mixins</li>
-</ul>
+<p>1 Everything's derived from Object, including Class and Instance
+1 Allows for SubInstances in addition to SubClasses
+1 Multiple inheritance by mixins, i.e. copy stuff over: works due to the two points above
+1 Allows for flexibility</p>
 
 <h3>
 <a id="python-oo-im-not-an-expert" class="anchor" href="#python-oo-im-not-an-expert" aria-hidden="true"><span class="octicon octicon-link"></span></a>Python OO (I'm not an expert)</h3>
 
-<ul>
-<li>Class is separate from Instance</li>
-<li>Does not allow for SubInstance</li>
-<li>Multiple inheritance (for Class) is built into syntax</li>
-</ul>
+<p>1 Class is separate from Instance
+1 Does not allow for SubInstances
+1 Multiple inheritance (for Class) is built into syntax</p>
 
 <h3>
 <a id="when-oo-breaks-down" class="anchor" href="#when-oo-breaks-down" aria-hidden="true"><span class="octicon octicon-link"></span></a>When OO breaks down</h3>
 
 <ul>
 <li>Deep inheritance hierarchies that create rigid dependencies that are very difficult to break when requirements change</li>
-<li>JavaScript's flexibility may alleviate rigidity by providing crutches while the hierarchies are reworked</li>
-<li>In Python, maybe preplan for retiring old stuff and starting anew: Build shallow.</li>
+<li>JavaScript's flexibility may alleviate rigidity by providing crutches while the hierarchies are reworked, but this needs to be short-term only</li>
+<li>In Python, maybe preplan for retiring old stuff and starting anew</li>
+<li>In the end for both: Build shallow.</li>
 </ul>
 
       <footer class="site-footer">
