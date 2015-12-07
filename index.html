@@ -439,30 +439,52 @@ angular.module('my.directives', ['my.services'])
 <h3>
 <a id="services" class="anchor" href="#services" aria-hidden="true"><span class="octicon octicon-link"></span></a>Services</h3>
 
+<p>Using prototypal inheritance and/or mixins:</p>
+
+<pre><code>angular.module('my.services', []).factory('mySubClass', ['myClass', function() {
+
+    var SubController = function($filter) {
+
+        myClass.BaseController.apply(this);
+
+        this.modelDef = {
+            // set of model definitions
+        };
+        this.setupModel();
+    };
+    SubController.prototype = Object.create(myClass.BaseController.prototype);
+
+    return {
+        SubController: SubController
+    };
+}]);
+</code></pre>
+
+<p>Decorator pattern:</p>
+
+<pre><code>angular.module('my', [])
+    .decorator('myService', function ($delegate) {
+
+        // do stuff to $delegate
+        return $delegate;
+    });
+</code></pre>
+
 <h3>
 <a id="directives" class="anchor" href="#directives" aria-hidden="true"><span class="octicon octicon-link"></span></a>Directives</h3>
 
 <p>Using prototypal inheritance and/or mixins: See myDirective above, where you inherit directive controllers.</p>
 
-<p>I have not had a need to do this, but it looks neat: <a href="http://thaiat.github.io/blog/2014/03/10/extending-an-existing-directive-in-angularjs/">Directive wrapping</a></p>
+<p>I have not had a need to do these below:
+<a href="http://thaiat.github.io/blog/2014/03/10/extending-an-existing-directive-in-angularjs/">Directive wrapping</a></p>
 
 <p>Decorator pattern:</p>
 
 <pre><code>angular.module('my', [])
     .decorator('myReportDirective', function ($delegate) {
 
-        return function (constructor, locals) {
-
-            var controller = $delegate.apply(null, arguments);
-
-            return angular.extend(function () {
-
-                locals.$scope.common = true; // some stuff
-
-                return controller();
-
-            }, controller);
-        };
+        // do stuff to $delegate
+        return $delegate;
     });
 </code></pre>
 
