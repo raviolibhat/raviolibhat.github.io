@@ -1,45 +1,40 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en-us">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta charset="UTF-8">
     <title>Easy URL Routing with AngularJS by raviolibhat</title>
-
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/github-dark.css">
-    <script src="javascripts/scale.fix.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
   <body>
-    <div class="wrapper">
-      <header class="without-description">
-        <h1>Easy URL Routing with AngularJS</h1>
-        <p></p>
-        <p class="view"><a href="https://github.com/raviolibhat">View the Project on GitHub <small>raviolibhat</small></a></p>
-        <ul>
-          <li class="single"><a href="https://github.com/raviolibhat/raviolibhat.github.io">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <h3>
+    <section class="page-header">
+      <h1 class="project-name">Easy URL Routing with AngularJS</h1>
+      <h2 class="project-tagline"></h2>
+    </section>
+
+    <section class="main-content">
+      <h3>
 <a id="who-am-i" class="anchor" href="#who-am-i" aria-hidden="true"><span class="octicon octicon-link"></span></a>Who am I?</h3>
 
 <ul>
 <li>Educated in <em>the</em> full-stack: Low-level microchip design, processor architecture, web: back-end, front-end, UI/UX.</li>
 <li>Jack-of-all-trades? Not really.</li>
 <li>
-<strong>Web Architect</strong>? Going on several years.</li>
+<strong>Web Architect</strong>. For most of my career so far.</li>
 <li>Front-end (my preferred zone): Visually appealing, immediate gratification, human interaction.</li>
-<li>Back-end (occasional forays): Delayed gratification, solutions can get unbounded, researchy.</li>
+<li>Back-end (occasional forays): Delayed gratification, can get researchy.</li>
 <li>Microchips/Hardware: Heavily delayed gratification, 'nuf said for me.</li>
-<li>Technical debt collector</li>
+<li>Technical debt collector.</li>
+<li>Wantrapreneur, in a good way :)</li>
 </ul>
 
 <hr>
+
+<h2>
+<a id="easy-url-routing-with-angularjs" class="anchor" href="#easy-url-routing-with-angularjs" aria-hidden="true"><span class="octicon octicon-link"></span></a>Easy URL Routing with AngularJS</h2>
 
 <h3>
 <a id="goals" class="anchor" href="#goals" aria-hidden="true"><span class="octicon octicon-link"></span></a>Goals</h3>
@@ -85,12 +80,12 @@
 Examples:</p>
 
 <ul>
-<li><code>?view=productA</code></li>
-<li><code>?view=productA&amp;subview=report</code></li>
-<li><code>?view=productA&amp;subview=report&amp;sort=date</code></li>
-<li><code>?view=productA&amp;subview=detail</code></li>
-<li><code>?view=productB&amp;subview=detail</code></li>
-<li><code>?view=productB&amp;subview=detail&amp;row=123</code></li>
+<li><code>?view=productAye</code></li>
+<li><code>?view=productAye&amp;subview=report</code></li>
+<li><code>?view=productAye&amp;subview=report&amp;sort=date</code></li>
+<li><code>?view=productAye&amp;subview=detail</code></li>
+<li><code>?view=productBee&amp;subview=detail</code></li>
+<li><code>?view=productBee&amp;subview=detail&amp;row=123</code></li>
 </ul>
 
 <p>Entities:</p>
@@ -107,13 +102,20 @@ All bindings to such parameters by any component are done on the Location model.
 Example actions:</p>
 
 <ul>
-<li>Switch views based on URL parameter 'view': ng-switch on root.locationModel.view, target productA vs productB etc.</li>
+<li>Switch views based on URL parameter 'subview': ng-switch on root.locationModel.subview, target 'report' vs 'detail' etc.</li>
 <li>Set sort column indication on a detail table: ng-class on root.locationModel.sort</li>
 <li>More complex actions: $watch a subset of parameters in root.locationModel</li>
 </ul>
 
 <p>When components are destroyed, any parameters they defined are removed from locationModel automatically.
 URL parameters with default values, set with register(), are hidden from the URL.</p>
+
+<p>Contracts:</p>
+
+<ul>
+<li>Child components should not define the same parameter names as a parent. If needed, use namespaces.</li>
+<li>Order of parameters is the order of register() invocations, but not guaranteed. This means navigation within an app generally has good order. But if a bookmark link is navigated to, the order of parameters may change upon navigation, though it won't add an extra navigation.</li>
+</ul>
 
 <h3>
 <a id="derived-goals" class="anchor" href="#derived-goals" aria-hidden="true"><span class="octicon octicon-link"></span></a>Derived Goals</h3>
@@ -180,12 +182,14 @@ the finger that corresponds to the LED.  Then, the lit LED turns off and another
 <a id="patent-pending" class="anchor" href="#patent-pending" aria-hidden="true"><span class="octicon octicon-link"></span></a>Patent Pending</h3>
 
 <p><a href="http://raviolibhat.github.io/patent_figs.pdf">figs</a></p>
-      </section>
-    </div>
-    <footer>
-      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
-    </footer>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-    
+
+      <footer class="site-footer">
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
   </body>
 </html>
