@@ -103,7 +103,7 @@ Example actions:</p>
 
 <ul>
 <li>
-<p>Switch views based on URL parameter 'subview': ng-switch on root.locationModel.subview, target 'report' vs 'detail' etc.</p>
+<p>Switch views based on URL parameter 'subview': ng-switch on $root.locationModel.subview, target 'report' vs 'detail' etc.</p>
 
 <pre><code>&lt;div ng-switch="$root.locationModel.subview"&gt;
     &lt;overview ng-switch-when="overview"&gt;&lt;/overview&gt;
@@ -113,13 +113,13 @@ Example actions:</p>
 </code></pre>
 </li>
 <li>
-<p>Set sort column indication on a detail table: ng-class on root.locationModel.sort</p>
+<p>Set sort column indication on a detail table: ng-class on $root.locationModel.sort</p>
 
-<pre><code>&lt;div ng-class="{'sorted-col': $root.locationModel.sort}"&gt;&lt;/div&gt;
+<pre><code>&lt;div ng-class="{'sorted-col': col==$root.locationModel.sort}"&gt;&lt;/div&gt;
 </code></pre>
 </li>
 <li>
-<p>More complex actions: $watch a subset of parameters in root.locationModel</p>
+<p>More complex actions: $watch a subset of parameters in $root.locationModel</p>
 
 <pre><code>$scope.$watch(
     function() {
@@ -345,17 +345,18 @@ the finger that corresponds to the LED.  Then, the lit LED turns off and another
 <h3>
 <a id="solar-energy-analogy" class="anchor" href="#solar-energy-analogy" aria-hidden="true"><span class="octicon octicon-link"></span></a>Solar Energy analogy:</h3>
 
-<p>Classical Inheritance</p>
-
 <ul>
 <li>Energy: exists everywhere (generic Class)</li>
-<li>Emitting: action without binding (Function)</li>
 <li>Light: tangible Energy (Instance)</li>
-<li>Sunlight: tangible Energy (SubInstance)</li>
-<li>Emitting Sunlight: action with binding (Method)</li>
-<li>Solar cell (Directive/Component)</li>
-<li>
-<li>
+<li>Sunlight: tangible Energy (SubInstance, yeah!)</li>
+<li>Universe: provider of Energy (Service)</li>
+<li>Emit: action without binding (Class Function)</li>
+<li>Sun: provider of Sunlight (SubService)</li>
+<li>Sun Emit: action with binding (Instance Method)</li>
+<li>Solarcell: Component (Directive)</li>
+<li>AdvancedCell: Component (SubDirective)</li>
+<li>Absorb: action without binding (Class Function)</li>
+<li>Solarcell Absorb: action with binding (Instance Method)</li>
 </ul>
 
 <h3>
