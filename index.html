@@ -85,7 +85,7 @@ Examples:</p>
 <li><code>?view=productAye&amp;subview=report&amp;sort=date</code></li>
 <li><code>?view=productAye&amp;subview=detail</code></li>
 <li><code>?view=productBee&amp;subview=detail</code></li>
-<li><code>?view=productBee&amp;subview=detail&amp;row=123</code></li>
+<li><code>?view=productBee&amp;subview=detail&amp;report=123</code></li>
 </ul>
 
 <p>Entities:</p>
@@ -102,9 +102,40 @@ All bindings to such parameters by any component are done on the Location model.
 Example actions:</p>
 
 <ul>
-<li>Switch views based on URL parameter 'subview': ng-switch on root.locationModel.subview, target 'report' vs 'detail' etc.</li>
-<li>Set sort column indication on a detail table: ng-class on root.locationModel.sort</li>
-<li>More complex actions: $watch a subset of parameters in root.locationModel</li>
+<li>
+<p>Switch views based on URL parameter 'subview': ng-switch on root.locationModel.subview, target 'report' vs 'detail' etc.</p>
+
+<pre><code>&lt;div ng-switch="$root.locationModel.subview"&gt;
+    &lt;overview ng-switch-when="overview"&gt;&lt;/overview&gt;
+    &lt;report ng-switch-when="report"&gt;&lt;/report&gt;
+    &lt;detail ng-switch-when="detail"&gt;&lt;/detail&gt;
+&lt;/div&gt;
+</code></pre>
+</li>
+<li>
+<p>Set sort column indication on a detail table: ng-class on root.locationModel.sort</p>
+
+<pre><code>&lt;div ng-class="{'sorted-col': $root.locationModel.sort}"&gt;&lt;/div&gt;
+</code></pre>
+</li>
+<li>
+<p>More complex actions: $watch a subset of parameters in root.locationModel</p>
+
+<pre><code>$scope.$watch(
+    function() {
+        var locationModel = angular.copy($rootScope.locationModel);
+        delete locationModel.report;
+        delete locationModel.sort;
+
+        return locationModel;
+    },
+    function() {
+        // do things independent of a report or sorting change
+    },
+    true
+);
+</code></pre>
+</li>
 </ul>
 
 <p>When components are destroyed, any parameters they defined are removed from locationModel automatically.
@@ -128,7 +159,12 @@ angular.module('my.services', []).factory('myLocation', ['$rootScope', '$locatio
         for (var param in paramDefaults) {
 
             if (param in locationParams) {
-                locationModel[param] = (typeof paramDefaults[param] == "number") ? parseInt(locationParams[param]) : locationParams[param];
+                if (typeof paramDefaults[param] == "number") {
+                    locationModel[param] = parseInt(locationParams[param]);
+                }
+                else {
+                    locationModel[param] = locationParams[param];
+                }
             }
             else {
                 locationModel[param] = paramDefaults[param];
@@ -174,7 +210,9 @@ angular.module('my.services', []).factory('myLocation', ['$rootScope', '$locatio
             }
         }
 
-        if (Object.keys(locationParams).length == 0) { // prevent an infinite digest (see Angular issues 9635 and 10228)... remove after Angular upgrade fixes bug.
+        if (Object.keys(locationParams).length == 0) {
+            // prevent an infinite digest (see Angular issues 9635 and 10228)
+            // ...remove after Angular upgrade fixes bug.
             return;
         }
 
@@ -298,6 +336,42 @@ the finger that corresponds to the LED.  Then, the lit LED turns off and another
 <a id="patent-pending" class="anchor" href="#patent-pending" aria-hidden="true"><span class="octicon octicon-link"></span></a>Patent Pending</h3>
 
 <p><a href="http://raviolibhat.github.io/patent_figs.pdf">figs</a></p>
+
+<hr>
+
+<h2>
+<a id="inheritance-patterns-in-javascript-and-angularjs" class="anchor" href="#inheritance-patterns-in-javascript-and-angularjs" aria-hidden="true"><span class="octicon octicon-link"></span></a>Inheritance patterns in JavaScript and AngularJS</h2>
+
+<h3>
+<a id="solar-energy-analogy" class="anchor" href="#solar-energy-analogy" aria-hidden="true"><span class="octicon octicon-link"></span></a>Solar Energy analogy:</h3>
+
+<p>Classical Inheritance</p>
+
+<ul>
+<li>Energy: exists everywhere (generic Class)</li>
+<li>Emitting: action without binding (Function)</li>
+<li>Light: tangible Energy (Instance)</li>
+<li>Sunlight: tangible Energy (SubInstance)</li>
+<li>Emitting Sunlight: action with binding (Method)</li>
+<li>Solar cell (Directive/Component)</li>
+<li>
+<li>
+</ul>
+
+<h3>
+<a id="when-oo-breaks-down" class="anchor" href="#when-oo-breaks-down" aria-hidden="true"><span class="octicon octicon-link"></span></a>When OO breaks down</h3>
+
+<ul>
+<li>Deep inheritance hierarchies that create rigid dependencies that are very difficult to break when requirements change</li>
+</ul>
+
+<h3>
+<a id="recommendations-for-building-commercial-software" class="anchor" href="#recommendations-for-building-commercial-software" aria-hidden="true"><span class="octicon octicon-link"></span></a>Recommendations for building commercial software</h3>
+
+<ul>
+<li>Favor simplicity over complexity</li>
+<li>Leverage the cutting edge of open-source, not the bleeding edge</li>
+</ul>
 
       <footer class="site-footer">
 
