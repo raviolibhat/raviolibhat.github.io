@@ -135,7 +135,7 @@ Examples:</p>
 <li><code>?product=analytics&amp;view=report&amp;sort=date</code></li>
 <li><code>?product=analytics&amp;view=detail</code></li>
 <li><code>?product=finance&amp;view=detail</code></li>
-<li><code>?product=finance&amp;view=detail&amp;report=abc</code></li>
+<li><code>?product=finance&amp;view=detail&amp;filter=abc</code></li>
 </ul>
 
 <p>Entities:</p>
@@ -174,13 +174,13 @@ Example actions:</p>
 <pre><code>$scope.$watch(
     function() {
         var locationModel = angular.copy($rootScope.locationModel);
-        delete locationModel.report;
+        delete locationModel.filter;
         delete locationModel.sort;
 
         return locationModel;
     },
     function() {
-        // do things independent of a report or sorting change
+        // do things independent of a filter or sorting change
     },
     true
 );
