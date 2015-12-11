@@ -458,7 +458,7 @@ angular.module('my.directives', ['my.services'])
 
             myClass.BaseController.apply(this);
 
-            angular.extend(this, myMixin); // mix in to controller-bound scope
+            angular.extend(this, myMixin); // mix in to controller instance
 
             this.modelDef = {
                 // set of model definitions
@@ -496,9 +496,9 @@ angular.module('my.directives', ['my.services'])
 
             return angular.extend(function () {
 
-                return angular.extend(controller(), myMixin); // mix in to controller-bound scopes
+                return angular.extend(controller(), myMixin); // mix in to controller instances
 
-                // one can also do things to the instance of controller() based on the type of 'constructor'
+                // one can also do things based on the type of 'constructor'
 
             }, controller);
         };
