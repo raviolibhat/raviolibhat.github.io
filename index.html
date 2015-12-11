@@ -353,7 +353,29 @@ angular.module('my.services', []).factory('myLocation', ['$rootScope', '$locatio
 <li>Computer Sciencey</li>
 <li>ES6 'class' keyword</li>
 <li>used below as "inheritance"</li>
-<li>Example: Dogs and Cats are Animals. Dogs cannot meow(). Cats cannot bark().</li>
+<li>
+<p>Example: Dogs and Cats are Animals. Dogs cannot meow(). Cats cannot bark().</p>
+
+<p>var Animal = function(){};
+Animal.prototype = { walk: function(){} };</p>
+
+<p>var Dog = function(){};
+Dog.prototype = Object.create(Animal.prototype);
+Dog.prototype.bark = function(){};</p>
+
+<p>var Cat = function(){};
+Cat.prototype = Object.create(Animal.prototype);
+Cat.prototype.meow = function(){};</p>
+
+<p>var dog = new Dog;
+var cat = new Cat;</p>
+
+<p>dog instanceof Animal; // true
+dog instanceof Dog; // true
+dog instanceof Cat; // false
+dog.bark; // defined
+dog.meow; // undefined</p>
+</li>
 </ul>
 
 <h3>
@@ -364,7 +386,23 @@ angular.module('my.services', []).factory('myLocation', ['$rootScope', '$locatio
 <li>Uses angular.extend(), copying traits over</li>
 <li>ES6 Object.assign()</li>
 <li>used below as "mixin"</li>
-<li>Example: Animals can be Dogs or Cats, given their traits of bark() and meow().</li>
+<li>
+<p>Example: Animals can be Dogs or Cats, given their traits of bark() and meow().</p>
+
+<p>// from example above
+dog.meow = cat.meow;
+dog.meow; // Now defined. But conflicts with instanceof operator result of Cat.</p>
+
+<p>// use of mixins
+var dogMixin = { bark: function(){} };
+var catMixin = { meow: function(){} };</p>
+
+<p>var animal = { walk: function(){} };
+var dog = angular.extend({}, animal, dogMixin);
+var cat = angular.extend({}, animal, catMixin);
+dog.bark; // defined
+dog.meow; // undefined</p>
+</li>
 </ul>
 
 <h3>
