@@ -390,20 +390,21 @@ dog.meow; // undefined
 <li>
 <p>Example: Animals can be Dogs or Cats, given their traits of bark() and meow().</p>
 
-<p>// from example above
+<pre><code>// from example above
 dog.meow = cat.meow;
-dog.meow; // Now defined. But conflicts with instanceof operator result of Cat.</p>
+dog.meow; // Now defined. But conflicts with instanceof operator result of Cat.
 
-<p>// use of mixins
+// use of mixins
 var dogMixin = { bark: function(){} };
-var catMixin = { meow: function(){} };</p>
+var catMixin = { meow: function(){} };
 
-<p>var animal = { walk: function(){} };
+var animal = { walk: function(){} };
 var dog = angular.extend({}, animal, dogMixin);
 var cat = angular.extend({}, animal, catMixin);
 dog.bark; // defined
 dog.meow; // undefined
-// The instanceof operator can't be used. Instead, error out or use duck-typing.</p>
+// The instanceof operator can't be used. Instead, error out or use duck-typing.
+</code></pre>
 </li>
 </ul>
 
