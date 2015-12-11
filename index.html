@@ -372,8 +372,9 @@ var cat = new Cat;
 dog instanceof Animal; // true
 dog instanceof Dog; // true
 dog instanceof Cat; // false
+
 dog.bark; // defined
-dog.meow; // undefined
+dog.meow; // not defined
 </code></pre>
 </li>
 </ul>
@@ -402,7 +403,7 @@ var dog = angular.extend({}, animal, dogMixin);
 var cat = angular.extend({}, animal, catMixin);
 
 dog.bark; // defined
-dog.meow; // undefined
+dog.meow; // not defined
 
 // The instanceof operator can't be used. Instead, error out or use duck-typing.
 </code></pre>
