@@ -401,7 +401,8 @@ var catMixin = { meow: function(){} };</p>
 var dog = angular.extend({}, animal, dogMixin);
 var cat = angular.extend({}, animal, catMixin);
 dog.bark; // defined
-dog.meow; // undefined</p>
+dog.meow; // undefined
+// The instanceof operator can't be used. Instead, error out or use duck-typing.</p>
 </li>
 </ul>
 
