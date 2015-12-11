@@ -21,14 +21,13 @@
 
 <ul>
 <li>Educated in <em>the</em> full-stack: Low-level microchip design, processor architecture, web: back-end, front-end, UI/UX.</li>
-<li>Jack-of-all-trades? Not really.</li>
-<li>
-<strong>Web Architect</strong>. For my career.</li>
+<li>Jack-of-all-trades?</li>
+<li><strong>Web Architect</strong></li>
 <li>Front-end (my preferred zone): Visually appealing, immediate gratification, human interaction.</li>
 <li>Back-end (forays): Delayed gratification, can get researchy.</li>
-<li>Microchips/Hardware: Heavily delayed gratification, 'nuf said for me.</li>
-<li>Technical debt collector.</li>
+<li>Microchips/Hardware: Heavily delayed gratification.</li>
 <li>Wantrapreneur, in a good way :)</li>
+<li>Technical debt collector.</li>
 </ul>
 
 <hr>
@@ -337,7 +336,7 @@ angular.module('my.services', []).factory('myLocation', ['$rootScope', '$locatio
 
 <ul>
 <li>Internal application (non-URL) routing</li>
-<li>Object-oriented URL routing</li>
+<li>Parameter collision</li>
 <li>Complexity</li>
 </ul>
 
@@ -361,7 +360,7 @@ angular.module('my.services', []).factory('myLocation', ['$rootScope', '$locatio
 
 <ul>
 <li>"Dynamic SubClassing"</li>
-<li>Uses extend()</li>
+<li>Uses extend(), copying traits over</li>
 <li>Easier to understand for non-CS folks</li>
 <li>used below as "mixin"</li>
 </ul>
@@ -520,17 +519,17 @@ angular.module('my.directives', ['my.services'])
 <p>Note: There is no $directive service like there is $controller (above), so you can't blanket all directives that way.</p>
 
 <h3>
-<a id="javascript-oo" class="anchor" href="#javascript-oo" aria-hidden="true"><span class="octicon octicon-link"></span></a>JavaScript OO</h3>
+<a id="javascript-inheritance" class="anchor" href="#javascript-inheritance" aria-hidden="true"><span class="octicon octicon-link"></span></a>JavaScript Inheritance</h3>
 
 <ul>
 <li>Everything's derived from Object, including Class and Instance</li>
 <li>Allows for SubInstances in addition to SubClasses</li>
-<li>Multiple inheritance by mixins, i.e. copy things over: works due to the two points above</li>
+<li>Multiple inheritance by mixins, i.e. copy multiple traits over: works due to the two points above</li>
 <li>Flexible</li>
 </ul>
 
 <h3>
-<a id="python-oo-im-not-an-expert" class="anchor" href="#python-oo-im-not-an-expert" aria-hidden="true"><span class="octicon octicon-link"></span></a>Python OO (I'm not an expert)</h3>
+<a id="python-inheritance-im-not-an-expert" class="anchor" href="#python-inheritance-im-not-an-expert" aria-hidden="true"><span class="octicon octicon-link"></span></a>Python Inheritance (I'm not an expert)</h3>
 
 <ul>
 <li>Class is separate from Instance</li>
@@ -539,13 +538,12 @@ angular.module('my.directives', ['my.services'])
 </ul>
 
 <h3>
-<a id="when-oo-breaks-down" class="anchor" href="#when-oo-breaks-down" aria-hidden="true"><span class="octicon octicon-link"></span></a>When OO breaks down</h3>
+<a id="when-inheritance-breaks-down" class="anchor" href="#when-inheritance-breaks-down" aria-hidden="true"><span class="octicon octicon-link"></span></a>When Inheritance breaks down</h3>
 
 <ul>
 <li>Deep inheritance hierarchies that create rigid dependencies that are very difficult to break when requirements change</li>
 <li>JavaScript's flexibility may alleviate rigidity by providing crutches while the hierarchies are reworked, but this needs to be short-term only</li>
 <li>In Python, maybe preplan for retiring old things and starting anew</li>
-<li>In the end for both: Build shallow.</li>
 </ul>
 
       <footer class="site-footer">
