@@ -356,11 +356,10 @@ angular.module('my.services', []).factory('myLocation', ['$rootScope', '$locatio
 <li>
 <p>Example: Dogs and Cats are Animals. Dogs cannot meow(). Cats cannot bark().</p>
 
-<p>{
-    var Animal = function(){};
-    Animal.prototype = { walk: function(){} };</p>
+<pre><code>var Animal = function(){};
+Animal.prototype = { walk: function(){} };
 
-<pre><code>var Dog = function(){};
+var Dog = function(){};
 Dog.prototype = Object.create(Animal.prototype);
 Dog.prototype.bark = function(){};
 
@@ -377,8 +376,6 @@ dog instanceof Cat; // false
 dog.bark; // defined
 dog.meow; // undefined
 </code></pre>
-
-<p>}</p>
 </li>
 </ul>
 
