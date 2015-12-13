@@ -339,6 +339,13 @@ angular.module('my.services', []).factory('myLocation', ['$rootScope', '$locatio
 <li>Complexity</li>
 </ul>
 
+<h3>
+<a id="best-practice" class="anchor" href="#best-practice" aria-hidden="true"><span class="octicon octicon-link"></span></a>Best Practice</h3>
+
+<ul>
+<li>Angular 1 allows you to create a standalone controller without a directive. This is especially notable when using the ngRoute module. For scalability reasons, and planning for Angular 2: All controllers should be in Directives. This also enables use of the above easy routing and watchers, instead of ngView and ngRoute promises.</li>
+</ul>
+
 <hr>
 
 <h1>
@@ -588,6 +595,13 @@ angular.module('my.directives', ['my.services'])
 <li>Deep inheritance hierarchies that create rigid dependencies that are very difficult to break when requirements change</li>
 <li>JavaScript's SubInstance flexibility may alleviate rigidity by providing crutches while the hierarchies are reworked, but this needs to be short-term only</li>
 <li>In Python, maybe preplan for retiring old things and starting anew</li>
+</ul>
+
+<h3>
+<a id="best-practice-1" class="anchor" href="#best-practice-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Best Practice</h3>
+
+<ul>
+<li>For scalability reasons, and the aforementioned breaking down: build shallow and wide, instead of deep and narrow. Favor composition over inheritance to do that.</li>
 </ul>
 
       <footer class="site-footer">
