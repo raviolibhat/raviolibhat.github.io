@@ -687,7 +687,7 @@ angular.module('my.directives', ['my.services'])
 <p>myExtend service:</p>
 
 <pre><code>// instance extensions
-.factory('myExtend', ['$controller', function($controller) {
+angular.factory('myExtend', ['$controller', function($controller) {
     return {
         wrapObject: function(obj) {
 
