@@ -791,7 +791,7 @@ angular.module('my.directives', ['my.services'])
 }]);
 </code></pre>
 
-<p>FilterCtrl:</p>
+<p>myFilter directive+controller, with FilterCtrl base controller:</p>
 
 <pre><code>angular.module('my.directives.filter', ['my.directives.dateFilter', 'my.directives.listFilter'])
 
@@ -891,7 +891,7 @@ angular.module('my.directives', ['my.services'])
 
         angular.extend(ctrl, {
 
-            customFunc: function() {
+            customString: function() {
                 var paramDef = $def &amp;&amp; $def.options;
                 if (!paramDef) {
                     return;
@@ -912,14 +912,14 @@ angular.module('my.directives', ['my.services'])
                             }
                         }
                         else {
-                            var customStr = model[defKey].$ctrl.customFunc();
+                            var customStr = model[defKey].$ctrl.customString();
                             if (customStr) {
                                 customArr.push(customStr);
                             }
                         }
                     }
                 }
-                return customArr.join(" and ");
+                return customArr.join(","); // separator
             }
         });
 
@@ -963,6 +963,224 @@ angular.module('my.directives', ['my.services'])
                     );
                 }
             }
+        }
+
+        return ctrl;
+    }]);
+</code></pre>
+
+<p>myListFilter directive+controller, and ListFilterCtrl base controller:</p>
+
+<pre><code>angular.module('my.directives.listFilter', [])
+
+    .directive('myListFilter', function() {
+
+        return {
+            require: ['^nsFilter', 'ngModel'],
+            restrict: 'E',
+            scope: {},
+            templateUrl: '/directives/listFilter.html',
+            controllerAs: '$ctrl',
+            bindToController: {
+                name: '=',
+                ngModel: '='
+            },
+
+            controller: ['$scope', 'myExtend', '$filter', function($scope, myExtend, $filter) {
+
+                var model = $scope.$ctrl.ngModel;
+                var ctrl = myExtend.subController($scope, 'ListFilterCtrl');
+
+                if (!('$def' in model)) { // set up defaults (for testing only)
+
+                    model.$def = {};
+                }
+
+                var $def = model.$def;
+
+                if (!('options' in $def)) { // set up defaults (for testing only)
+
+                    $def.options = {
+                        "": { index: 0, label: "(test)" }
+                    };
+                }
+
+                var modelMap = ctrl.modelMap;
+
+                angular.extend(ctrl, {
+
+                    defaultOrEmpty: function () {
+
+                        if (ctrl.isEmpty()) {
+                            return true;
+                        }
+
+                        var defaultKey = $filter('myOrderObjectBy')($def.options, 'index')[0]._key;
+
+                        for (var key in modelMap) {
+                            if ((key != defaultKey) &amp;&amp; modelMap[key]) {
+                                return false;
+                            }
+                        }
+
+                        return true;
+                    },
+
+                    displayString: function() {
+
+                        var strArr = [];
+
+                        ctrl.forEach(function(key) {
+
+                            strArr.push($def.options[key].label);
+                        });
+
+                        return strArr.join(', ');
+                    }
+                });
+            }],
+
+            link: function ($scope, $element, $attrs, ctrls) {
+
+                var ctrl = $scope.$ctrl = $scope.$ctrl.ngModel.$ctrl;
+
+                var filterCtrl = ctrls[0];
+                filterCtrl.addFilterComponent(ctrl.name, ctrl);
+            }
+        }
+    })
+
+    .controller('ListFilterCtrl', ['$scope', '$filter', 'myExtend', function($scope, $filter, myExtend) {
+
+        var model = $scope.$ctrl.ngModel;
+        var ctrl = myExtend.subController($scope);
+
+        var $def = model.$def;
+
+        var modelMap = {};
+
+        angular.extend(ctrl, {
+
+            modelMap: modelMap,
+
+            isEmpty: function () {
+
+                for (var key in modelMap) {
+                    if (modelMap[key]) {
+                        return false;
+                    }
+                }
+                return true;
+            },
+
+            clear: function() {
+
+                if (!$def || !$def.options) {
+                    return;
+                }
+
+                for (var key in $def.options) {
+
+                    modelMap[key] = false;
+                }
+            },
+
+            reset: function () {
+
+                ctrl.clear();
+
+                if (!$def || !$def.options) {
+                    modelMap[''] = true;
+                }
+                else {
+                    var defaultKey = $filter('myOrderObjectBy')($def.options, 'index')[0]._key;
+                    modelMap[defaultKey] = true;
+                }
+            },
+
+            customString: function() {
+
+                if (ctrl.isEmpty()) {
+                    return;
+                }
+
+                var customArr = [];
+
+                ctrl.forEach(function(key) {
+
+                    customArr.push("custom string");
+                });
+
+                return customArr.join(","); // separator
+            },
+
+            forEach: function(handler) {
+
+                if (ctrl.isEmpty()) {
+                    return;
+                }
+
+                var optionsArr = $filter('myOrderObjectBy')($def.options, 'index');
+
+                for (var i=0, len=optionsArr.length; i&lt;len; i++) {
+
+                    var key = optionsArr[i]._key;
+
+                    if (key == '') {
+                        continue;
+                    }
+
+                    if (modelMap[key]) {
+                        handler(key);
+                    }
+                }
+            },
+
+            valueString: function() {
+
+                if (ctrl.isEmpty()) {
+                    return "";
+                }
+
+                var strArr = [];
+
+                ctrl.forEach(function(key) {
+
+                    strArr.push(key);
+                });
+
+                return strArr.join(',');
+            }
+        });
+
+        $scope.$watchCollection("$ctrl.ngModel", function() {
+
+            ctrl.clear();
+
+            model.forEach(function(key) {
+
+                modelMap[key] = true;
+            });
+        });
+
+        $scope.$watchCollection("$ctrl.modelMap", function() {
+
+            model.length = 0;
+
+            ctrl.forEach(function(key) {
+
+                model.push(key);
+            });
+
+            if (!$def) {
+                if (model.length == 0) {
+                    model.push('');
+                }
+            }
+        });
+
+        if (model.length == 0) {
+            ctrl.reset(); // set default value
         }
 
         return ctrl;
