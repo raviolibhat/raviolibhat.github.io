@@ -684,6 +684,291 @@ angular.module('my.directives', ['my.services'])
 
 <p>provides complex fields and their definitions.</p>
 
+<p>myExtend service:</p>
+
+<pre><code>// instance extensions
+.factory('myExtend', ['$controller', function($controller) {
+    return {
+        wrapObject: function(obj) {
+
+            // wrap with setters to the prototype
+            var props = {};
+
+            for(var key in obj) {
+
+                if (typeof obj[key] != "function") {
+                    props[key] = {
+
+                        "get": (function (key) {
+
+                            return function () {
+
+                                return obj[key];
+                            };
+                        })(key),
+
+                        "set": (function (key) {
+
+                            return function (val) {
+
+                                obj[key] = val;
+                            };
+                        })(key)
+                    }
+                }
+            }
+
+            return Object.create(obj, props);
+        },
+
+        subController: function($scope, name) {
+
+            var model = $scope.$ctrl.ngModel;
+            var baseCtrl = model.$ctrl;
+
+            if (!name) {
+                if (!baseCtrl) {
+                    baseCtrl = $scope.$ctrl;
+                }
+
+                model.$ctrl = baseCtrl;
+                return baseCtrl;
+            }
+
+            if (!baseCtrl) {
+                baseCtrl = $controller(name, {$scope: $scope});
+            }
+
+            var ctrl = this.wrapObject(baseCtrl);
+
+            model.$ctrl = ctrl;
+
+            $scope.$on('$destroy', function() {
+                model.$ctrl = baseCtrl;
+            });
+
+            return ctrl;
+        },
+
+        component: {
+
+            setModels: function () {
+
+                if ('modelDef' in this) {
+
+                    // set up models based on definitions
+                    this.model = this.model || {};
+
+                    for (var defKey in this.modelDef) {
+
+                        var def = this.modelDef[defKey];
+                        var model;
+
+                        if (def.list) {
+                            model = [];
+                            if ('sortBy' in def) {
+                                model.$sort = def.sortBy;
+                            }
+                            if (def.list.paged) {
+                                model.$offset = 0;
+                            }
+                        }
+                        else {
+                            model = {};
+                        }
+                        this.model[defKey] = model;
+                    }
+                }
+
+                if ('filterDef' in this) {
+
+                    this.filter = this.filter || {};
+                    this.filter.$def = this.filterDef;
+                }
+            }
+        }
+    };
+}]);
+</code></pre>
+
+<p>FilterCtrl:</p>
+
+<pre><code>angular.module('my.directives.filter', ['my.directives.dateFilter', 'my.directives.listFilter'])
+
+    .directive('myFilter', function() {
+
+        return {
+            require: ['ngModel'],
+            restrict: 'E',
+            scope: {},
+            templateUrl: '/directives/filter.html',
+            controllerAs: '$ctrl',
+            bindToController: {
+                ngModel: '='
+            },
+
+            controller: ['$scope', '$controller', 'nsExtend', function($scope, $controller, nsExtend) {
+
+                var model = $scope.$ctrl.ngModel;
+                var ctrl = myExtend.subController($scope, 'FilterCtrl');
+                var $def = model.$def;
+
+                angular.extend(ctrl, {
+
+                    components: {},
+
+                    displayString: function (defKey) {
+
+                        var def = $def.options[defKey];
+                        if (defKey in ctrl.components) {
+                            return (def.label + ': ' + ctrl.components[defKey].displayString());
+                        }
+                        return (def.label + ': ' + model[defKey]);
+                    },
+
+                    addFilterComponent: function (name, componentCtrl) {
+
+                        ctrl.components[name] = componentCtrl;
+                    },
+
+                    defaultOrEmpty: function (defKey) {
+
+                        var def = $def.options[defKey];
+
+                        if (def.type == 'text') {
+                            return (model[defKey] == '');
+                        }
+                        else if (defKey in ctrl.components) {
+
+                            return ctrl.components[defKey].defaultOrEmpty();
+                        }
+
+                        return true;
+                    },
+
+                    hasFilters: function () {
+
+                        for (var defKey in $def.options) {
+
+                            if (!ctrl.defaultOrEmpty(defKey)) {
+                                return true;
+                            }
+                        }
+
+                        return false;
+                    },
+
+                    resetFilter: function (defKey) {
+
+                        var def = $def.options[defKey];
+
+                        if (def.type == 'text') {
+                            model[defKey] = '';
+                        }
+                        else {
+                            ctrl.components[defKey].reset();
+                        }
+                    },
+                    resetFilters: function () {
+
+                        for (var defKey in $def.options) {
+
+                            ctrl.resetFilter(defKey);
+                        }
+                    }
+                });
+
+                return ctrl;
+            }]
+        }
+    })
+
+    .controller('FilterCtrl', ['$rootScope', '$scope', '$controller', 'myExtend', function($rootScope, $scope, $controller, myExtend) {
+
+        var model = $scope.$ctrl.ngModel;
+        var ctrl = myExtend.subController($scope);
+        var $def = model.$def;
+
+        angular.extend(ctrl, {
+
+            customFunc: function() {
+                var paramDef = $def &amp;&amp; $def.options;
+                if (!paramDef) {
+                    return;
+                }
+
+                var customArr = [];
+                for (var defKey in model) {
+
+                    if (!model.hasOwnProperty(defKey) || (defKey[0] == '$') || (model[defKey] == null)) {
+                        continue;
+                    }
+
+                    if (defKey in paramDef) {
+                        if (paramDef[defKey].type == 'text') {
+
+                            if (model[defKey] != '') {
+                                customArr.push("custom string");
+                            }
+                        }
+                        else {
+                            var customStr = model[defKey].$ctrl.customFunc();
+                            if (customStr) {
+                                customArr.push(customStr);
+                            }
+                        }
+                    }
+                }
+                return customArr.join(" and ");
+            }
+        });
+
+        if (!$def) {
+            return ctrl;
+        }
+
+        for (var defKey in $def.options) {
+
+            var def = $def.options[defKey];
+
+            if (!(defKey in model)) {
+
+                switch(def.type) {
+
+                    case 'text':
+                        model[defKey] = '';
+                        break;
+
+                    case 'ListFilterCtrl':
+                        model[defKey] = [];
+                        break;
+
+                    default:
+                        model[defKey] = {};
+                }
+            }
+
+            if (def.type != 'text') {
+
+                var filterValue = model[defKey];
+                if ('$def' in def) {
+                    filterValue.$def = def.$def;
+                }
+                var $ctrl = filterValue.$ctrl;
+                if (!$ctrl) {
+                    $ctrl = { name: defKey, ngModel: filterValue };
+                    $controller(
+                        def.type,
+                        {$scope: angular.extend($rootScope.$new(true), {$ctrl: $ctrl})}
+                    );
+                }
+            }
+        }
+
+        return ctrl;
+    }]);
+</code></pre>
+
       <footer class="site-footer">
 
         <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
