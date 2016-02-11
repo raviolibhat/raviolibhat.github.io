@@ -976,7 +976,7 @@ angular.module('my.directives', ['my.services'])
     .directive('myListFilter', function() {
 
         return {
-            require: ['^nsFilter', 'ngModel'],
+            require: ['^myFilter', 'ngModel'],
             restrict: 'E',
             scope: {},
             templateUrl: '/directives/listFilter.html',
@@ -1186,6 +1186,203 @@ angular.module('my.directives', ['my.services'])
         return ctrl;
     }]);
 </code></pre>
+
+<p>myDateFilter directive+controller, and DateFilterCtrl controller:</p>
+
+<pre><code>var labels = {
+    'before': 'Before This Date',
+    'after': 'After This Date',
+    'on': 'On This Date',
+    'custom': 'Custom Range'
+};
+
+var emptyValue = {
+    starttime: 0,
+    endtime: 0
+};
+
+angular.module('my.directives.dateFilter', ['my.directives.datepicker'])
+
+    .directive('myDateFilter', function() {
+
+        return {
+            require: ['^myFilter', 'ngModel'],
+            restrict: 'E',
+            scope: {},
+            templateUrl: '/directives/dateFilter.html',
+            controllerAs: '$ctrl',
+            bindToController: {
+                name: '=',
+                ngModel: '='
+            },
+
+            controller: ['$scope', 'myExtend', function($scope, myExtend) {
+
+                var model = $scope.$ctrl.ngModel;
+                var ctrl = myExtend.subController($scope, 'DateFilterCtrl');
+
+                angular.extend(ctrl, {
+
+                    reset: function () {
+                        angular.extend(model, emptyValue);
+                    },
+
+                    defaultOrEmpty: function() {
+                        return ctrl.isEmpty(); // default value not supported
+                    },
+
+                    displayString: function() {
+
+                        if (ctrl.isEmpty()) {
+                            return '';
+                        }
+
+                        if (ctrl.selectionModel == 'custom') {
+                            return (labels[ctrl.selectionModel] + ' : ' + ctrl.date + ' - ' + ctrl.customEndDate);
+                        }
+
+                        return (labels[ctrl.selectionModel] + ' : ' + ctrl.date);
+                    },
+
+                    options: [
+                        {value: 'before', label: labels.before},
+                        {value: 'after', label: labels.after},
+                        {value: 'on', label: labels.on},
+                        {value: 'custom', label: labels.custom}
+                    ]
+                });
+
+                $scope.$watchCollection(function() {
+                    return {
+                        date: ctrl.date,
+                        customEndDate: ctrl.customEndDate,
+                        selectionModel: ctrl.selectionModel
+                    };
+                }, function(vals, oldVals) {
+
+                    if (angular.equals(vals, oldVals)) {
+                        return;
+                    }
+
+                    if (!ctrl.date || (ctrl.selectionModel == 'custom' &amp;&amp; (!ctrl.customEndDate || (moment(ctrl.date) &gt;= moment(ctrl.customEndDate))))) {
+                        ctrl.reset();
+                        return;
+                    }
+
+                    switch (ctrl.selectionModel) {
+
+                        case 'before':
+                            model.starttime = 1;
+                            model.endtime = moment(ctrl.date).startOf("day").unix() - 1;
+                            break;
+
+                        case 'after':
+                            model.starttime = moment(ctrl.date).endOf("day").unix() + 1;
+                            model.endtime = moment().endOf("day").unix();
+                            break;
+
+                        case 'on':
+                            model.starttime = moment(ctrl.date).startOf("day").unix();
+                            model.endtime = moment(ctrl.date).endOf("day").unix();
+                            break;
+
+                        case 'custom':
+                            model.starttime = moment(ctrl.date).startOf("day").unix();
+                            model.endtime = moment(ctrl.customEndDate).endOf("day").unix();
+                            break;
+                    }
+                });
+
+                $scope.$watchCollection(function() {
+                    return {
+                        starttime: model.starttime,
+                        endtime: model.endtime
+                    };
+                }, function() {
+
+                    if (!model.starttime || !model.endtime) {
+                        ctrl.date = '';
+                        ctrl.customEndDate = '';
+                    }
+                });
+            }],
+
+            link: function ($scope, $element, $attrs, ctrls) {
+
+                var ctrl = $scope.$ctrl = $scope.$ctrl.ngModel.$ctrl;
+
+                var filterCtrl = ctrls[0];
+                filterCtrl.addFilterComponent(ctrl.name, ctrl);
+
+                angular.extend(ctrl, {
+
+                    getDatepickerId: function (modelName) {
+
+                        // the jQuery datepicker widget creates dynamic IDs
+                        return $element.find("[ng-model='$ctrl." + modelName + "']")[0].id;
+                    }
+                });
+            }
+        }
+    })
+
+    .controller('DateFilterCtrl', ['$scope', '$filter', 'myExtend', function($scope, $filter, myExtend) {
+
+        var model = $scope.$ctrl.ngModel;
+        var ctrl = myExtend.subController($scope);
+
+        if (!('starttime' in model)) { // init
+
+            angular.extend(model, emptyValue);
+        }
+
+        angular.extend(ctrl, {
+
+            date: '',
+            customEndDate: '',
+            selectionModel: 'before',
+
+            isEmpty: function () {
+                return ((model.starttime == 0) &amp;&amp; (model.endtime == 0));
+            },
+
+            queryString: function() {
+                if (!ctrl.isEmpty()) {
+                    return "((" + ctrl.name + ".starttime eq " + model.starttime + ") and (" + ctrl.name + ".endtime eq " + model.endtime + "))";
+                }
+            }
+        });
+
+
+        if (ctrl.isEmpty()) {
+            return ctrl;
+        }
+
+        var dateFilter = $filter('date');
+
+        if (model.starttime == 1) {
+            ctrl.selectionModel = 'before';
+            ctrl.date = dateFilter((model.endtime+1)*1000, 'MM/dd/yyyy');
+        }
+        else if (model.starttime % 2) {
+            ctrl.selectionModel = 'after';
+            ctrl.date = dateFilter((model.starttime-1)*1000, 'MM/dd/yyyy');
+        }
+        else if ((model.endtime - model.starttime + 1) == 86400) {
+            ctrl.selectionModel = 'on';
+            ctrl.date = dateFilter(model.starttime*1000, 'MM/dd/yyyy');
+        }
+        else {
+            ctrl.selectionModel = 'custom';
+            ctrl.date = dateFilter(model.starttime*1000, 'MM/dd/yyyy');
+            ctrl.customEndDate = dateFilter(model.endtime*1000, 'MM/dd/yyyy');
+        }
+
+        return ctrl;
+    }]);
+</code></pre>
+
+<p>})();</p>
 
       <footer class="site-footer">
 
