@@ -617,21 +617,19 @@ angular.module('my.directives', ['my.services'])
 <h3>
 <a id="filters-example" class="anchor" href="#filters-example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Filters example</h3>
 
-<ul>
-<li>
-<p>Simple model</p>
+<p>Simple model:</p>
 
-<p>var model = {
+<pre><code>var model = {
     product: 'analytics',
     view: 'report',
     sort: 'date',
     searchText: 'abc'
-};</p>
-</li>
-<li>
-<p>Complex model</p>
+};
+</code></pre>
 
-<p>var model = {
+<p>Complex model:</p>
+
+<pre><code>var model = {
     product: 'analytics',
     view: ['report'],
     sort: ['date','name'],
@@ -681,9 +679,8 @@ angular.module('my.directives', ['my.services'])
             }
         }
     }
-};</p>
-</li>
-</ul>
+};
+</code></pre>
 
 <p>provides complex fields and their definitions.</p>
 
