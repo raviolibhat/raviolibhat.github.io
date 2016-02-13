@@ -292,7 +292,7 @@ angular.module('my.services', []).factory('myLocation', ['$rootScope', '$locatio
                 deregistrationToFunction = $rootScope.$on('$locationChangeStart', updateLocationModel);
 
                 // bind model to location.search params
-                deregistrationFroFunction = $rootScope.$watchCollection("ns.locationModel", updateLocationSearch);
+                deregistrationFroFunction = $rootScope.$watchCollection("locationModel", updateLocationSearch);
             }
 
             registrations++;
@@ -805,7 +805,7 @@ angular.factory('myExtend', ['$controller', function($controller) {
                 ngModel: '='
             },
 
-            controller: ['$scope', '$controller', 'nsExtend', function($scope, $controller, nsExtend) {
+            controller: ['$scope', '$controller', 'myExtend', function($scope, $controller, myExtend) {
 
                 var model = $scope.$ctrl.ngModel;
                 var ctrl = myExtend.subController($scope, 'FilterCtrl');
