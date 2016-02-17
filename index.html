@@ -723,29 +723,32 @@ angular.factory('myExtend', ['$controller', function($controller) {
 
             var model = $scope.$ctrl.ngModel;
             var baseCtrl = model.$ctrl;
+            var subCtrl = baseCtrl;
 
-            if (!name) {
-                if (!baseCtrl) {
-                    baseCtrl = $scope.$ctrl;
+            if (baseCtrl) {
+                subCtrl = this.wrapObject(baseCtrl);
+            }
+            else {
+                if (name) {
+                    subCtrl = $controller(name, {$scope: $scope});
                 }
-
-                model.$ctrl = baseCtrl;
-                return baseCtrl;
+                else {
+                    subCtrl = $scope.$ctrl;
+                }
             }
 
-            if (!baseCtrl) {
-                baseCtrl = $controller(name, {$scope: $scope});
-            }
-
-            var ctrl = this.wrapObject(baseCtrl);
-
-            model.$ctrl = ctrl;
+            model.$ctrl = subCtrl;
 
             $scope.$on('$destroy', function() {
-                model.$ctrl = baseCtrl;
+                if (baseCtrl) {
+                    model.$ctrl = baseCtrl;
+                }
+                else {
+                    delete model.$ctrl;
+                }
             });
 
-            return ctrl;
+            return subCtrl;
         },
 
         component: {
