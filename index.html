@@ -950,6 +950,13 @@ angular.module('my.directives', ['my.services'])
 </code></pre>
 
 <h3>
+<a id="best-practice" class="anchor" href="#best-practice" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Best Practice</h3>
+
+<ul>
+<li>The new $controller service (in 1.4) looks promising for Controller inheritance purposes, when used outside of Angular's testing framework.</li>
+</ul>
+
+<h3>
 <a id="services" class="anchor" href="#services" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Services</h3>
 
 <p>Using inheritance:</p>
@@ -1006,11 +1013,6 @@ angular.module('my.directives', ['my.services'])
 </code></pre>
 
 <p>Note: There is no $directive service like there is $controller (above), so you can't blanket all directives that way.</p>
-
-<h3>
-<a id="best-practice" class="anchor" href="#best-practice" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Best Practice</h3>
-
-<p>The new $controller service (in 1.4) looks promising for inheritance purposes, when used outside of Angular's testing framework.</p>
 
 <hr>
 
