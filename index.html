@@ -1007,6 +1007,11 @@ angular.module('my.directives', ['my.services'])
 
 <p>Note: There is no $directive service like there is $controller (above), so you can't blanket all directives that way.</p>
 
+<h3>
+<a id="best-practice" class="anchor" href="#best-practice" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Best Practice</h3>
+
+<p>The new $controller service looks promising for inheritance purposes, when used outside of Angular's testing framework.</p>
+
 <hr>
 
 <h1>
@@ -1106,7 +1111,7 @@ dog.meow; // not defined
 </ul>
 
 <h3>
-<a id="best-practice" class="anchor" href="#best-practice" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Best Practice</h3>
+<a id="best-practice-1" class="anchor" href="#best-practice-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Best Practice</h3>
 
 <ul>
 <li>For scalability reasons, and the aforementioned breaking down: build shallow and wide, instead of deep and narrow. Favor composition over inheritance to do that.</li>
@@ -1373,7 +1378,7 @@ angular.module('my.services', []).factory('myLocation', ['$rootScope', '$locatio
 </ul>
 
 <h3>
-<a id="best-practice-1" class="anchor" href="#best-practice-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Best Practice</h3>
+<a id="best-practice-2" class="anchor" href="#best-practice-2" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Best Practice</h3>
 
 <ul>
 <li>Angular 1 allows you to create a standalone controller without a directive. This is especially notable when using the ngRoute module. For scalability reasons, and planning for Angular 2: All controllers should be in directives. This also enables use of the above easy routing and watchers, instead of ngView and ngRoute promises.</li>
