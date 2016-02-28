@@ -32,665 +32,33 @@
 <hr>
 
 <h1>
-<a id="fiddle-fingers" class="anchor" href="#fiddle-fingers" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Fiddle Fingers</h1>
-
-<h3>
-<a id="history" class="anchor" href="#history" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>History</h3>
-
-<ul>
-<li>Invented by me in 2002</li>
-<li>Result of an internal contest at Xilinx, a semiconductor company</li>
-</ul>
-
-<h3>
-<a id="inputs" class="anchor" href="#inputs" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Inputs</h3>
-
-<ul>
-<li>4 finger-buttons</li>
-<li>1 reset</li>
-<li>1 on-board 555 clock</li>
-</ul>
-
-<h3>
-<a id="outputs" class="anchor" href="#outputs" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Outputs</h3>
-
-<ul>
-<li>4 level-LEDs</li>
-<li>4 value-LEDs</li>
-<li>1 7-segment score display</li>
-</ul>
-
-<h3>
-<a id="description" class="anchor" href="#description" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Description</h3>
-
-<p>Fiddle Fingers is designed to be used in child development centers, handicapped rehabilitation centers or simply as a toy for all ages. It is a game that tests finger-eye reflex coordination. The game consists of four buttons that the player places their four fingers on, which excludes the thumb.  When the game is started, one LED in four, lights up.  The player then depresses
-the finger that corresponds to the LED.  Then, the lit LED turns off and another one lights up. The player has to then depress that LED button and no other finger.  This process is repeated and gets faster and faster.</p>
-
-<p>The aim is to be quick at pressing the button corresponding to the LED that is on.  This tests the player's eye-finger reflex speed.  It is a good tool to improve the coordination of misfortunate disabled people who suffer with respect to hand-eye coordination.</p>
-
-<p>A display of four LEDs shows the player what level they have achieved.  There are five LEDs. The game starts with none of the four LEDs lit up, hence level 0.  Then 1 lights up as the speed increases, then another and so on till all four are lit up.  Once this level is completed the game stops. It should be very difficult if not impossible to get to this stage.</p>
-
-<p>Another display which is a 7-segment display shows the player's current score.  This is a count of how many LED presses the player has missed.  When this reaches six the game ends. Hence, the best player has the least score, and the highest level.</p>
-
-<p>Possible future modifications are increasing the score limit, cycling through the levels to attain more levels, changing the initial start speed of the game etc.</p>
-
-<h3>
-<a id="patent-application" class="anchor" href="#patent-application" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Patent Application</h3>
-
-<p><a href="http://raviolibhat.github.io/patent_figs.pdf">figs</a></p>
-
-<hr>
-
-<p><img src="http://raviolibhat.github.io/SantaPoitras1.jpg" alt="funny"></p>
-
-<h1>
-<a id="easy-url-hash-routing-with-angularjs" class="anchor" href="#easy-url-hash-routing-with-angularjs" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Easy URL Hash Routing with AngularJS</h1>
-
-<h3>
-<a id="goals" class="anchor" href="#goals" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Goals</h3>
-
-<ul>
-<li>URL Hash Routing Service</li>
-<li>Drive web application state from the URL</li>
-</ul>
-
-<h3>
-<a id="why" class="anchor" href="#why" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Why?</h3>
-
-<ul>
-<li>Browsing within a Single Page Application</li>
-<li>Supporting browser back, forward, refresh buttons</li>
-<li>Bookmarking and linking from other pages</li>
-</ul>
-
-<h3>
-<a id="when" class="anchor" href="#when" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>When?</h3>
-
-<p>2013, supporting older Internet Explorer versions</p>
-
-<h3>
-<a id="what" class="anchor" href="#what" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>What?</h3>
-
-<p>Existing options at the time:</p>
-
-<ul>
-<li>ngRoute module</li>
-<li>External ui-router package</li>
-<li>Leveraging $location (the winner)</li>
-<li>Vanilla JavaScript, non-Angular</li>
-</ul>
-
-<h3>
-<a id="how" class="anchor" href="#how" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How?</h3>
-
-<p>Supporting older browsers means no HTML5 History API...</p>
-
-<p>Basic URL format:</p>
-
-<p><code>http://host/path#?param1=value1&amp;param2=value2&amp;paramN=valueN</code></p>
-
-<p>Examples:</p>
-
-<ul>
-<li><code>?product=analytics</code></li>
-<li><code>?product=analytics&amp;view=report</code></li>
-<li><code>?product=analytics&amp;view=report&amp;sort=date</code></li>
-<li><code>?product=analytics&amp;view=detail</code></li>
-<li><code>?product=finance&amp;view=detail</code></li>
-<li><code>?product=finance&amp;view=detail&amp;filter=abc</code></li>
-</ul>
-
-<p>Entities:</p>
-
-<ul>
-<li>Location model: contains the name/value pairs</li>
-<li>Root scope: contains the Location model</li>
-<li>Location service: Built on $location, exposes a register() API</li>
-<li>Child scopes</li>
-</ul>
-
-<p>Components (directives) that use browser navigation, define URL parameters by using the Location service's register().
-All bindings to such parameters by any component are done on the Location model.
-Example actions:</p>
-
-<ul>
-<li>
-<p>Switch views based on URL parameter 'view': ng-switch on $root.locationModel.view, target 'report' vs 'detail' etc.</p>
-
-<pre><code>&lt;div ng-switch="$root.locationModel.view"&gt;
-    &lt;overview ng-switch-when="overview"&gt;&lt;/overview&gt;
-    &lt;report ng-switch-when="report"&gt;&lt;/report&gt;
-    &lt;detail ng-switch-when="detail"&gt;&lt;/detail&gt;
-&lt;/div&gt;
-</code></pre>
-</li>
-<li>
-<p>Set sort column indication on a detail table: ng-class on $root.locationModel.sort</p>
-
-<pre><code>&lt;div ng-class="{'sorted-col': col==$root.locationModel.sort}"&gt;&lt;/div&gt;
-</code></pre>
-</li>
-<li>
-<p>More complex actions: $watch a subset of parameters in $root.locationModel</p>
-
-<pre><code>$scope.$watch(
-    function() {
-        var locationModel = angular.copy($rootScope.locationModel);
-        delete locationModel.filter;
-        delete locationModel.sort;
-
-        return locationModel;
-    },
-    function() {
-        // do things independent of a filter or sorting change
-    },
-    true
-);
-</code></pre>
-</li>
-</ul>
-
-<p>When components are destroyed, any parameters they defined are removed from locationModel automatically.
-URL parameters with default values, set with register(), are hidden from the URL.</p>
-
-<p>Code:</p>
-
-<pre><code>// used to provide browser history support: two-way binds the location params with a model
-angular.module('my.services', []).factory('myLocation', ['$rootScope', '$location', function($rootScope, $location) {
-
-    var locationModel = {};
-    $rootScope.locationModel = locationModel;
-
-    var paramDefaults = {};
-
-    var updateLocationModel = function() {
-
-        var locationParams = $location.search();
-
-        // take location params and update the model, setting defaults as needed
-        for (var param in paramDefaults) {
-
-            if (param in locationParams) {
-                if (typeof paramDefaults[param] == "number") {
-                    locationModel[param] = parseInt(locationParams[param]);
-                }
-                else {
-                    locationModel[param] = locationParams[param];
-                }
-            }
-            else {
-                locationModel[param] = paramDefaults[param];
-            }
-        }
-
-        // copy any remaining non-default location params
-        for (var param in locationParams) {
-
-            if (!(param in paramDefaults)) {
-                locationModel[param] = locationParams[param];
-            }
-        }
-    };
-
-    var updateLocationSearch = function() {
-
-        var replaceLocation = true;
-        var oldLocationParams = $location.search();
-        var locationParams = {};
-
-        // only include non-default parameters in location.search
-        for (var param in paramDefaults) {
-
-            if (locationModel[param] != paramDefaults[param]) {
-                locationParams[param] = locationModel[param];
-
-                if (locationParams[param] != oldLocationParams[param]) {
-                    replaceLocation = false;
-                }
-            }
-        }
-
-        // also include any remaining params
-        for (var param in locationModel) {
-
-            if (!(param in paramDefaults)) {
-                locationParams[param] = locationModel[param];
-
-                if (locationParams[param] != oldLocationParams[param]) {
-                    replaceLocation = false;
-                }
-            }
-        }
-
-        if (Object.keys(locationParams).length == 0) {
-            // prevent an infinite digest (see Angular issues 9635 and 10228)
-            // ...remove after Angular upgrade fixes bug.
-            return;
-        }
-
-        if (replaceLocation) {
-            $location.replace();
-        }
-
-        $location.search(locationParams);
-    };
-
-    var registrations = 0;
-    var deregistrationToFunction = null;
-    var deregistrationFroFunction = null;
-
-    return {
-
-        register: function($scope, scopeParamDefaults) {
-
-            angular.extend(paramDefaults, scopeParamDefaults);
-
-            updateLocationModel();
-
-            if (registrations == 0) {
-                // bind location.search params to model
-                deregistrationToFunction = $rootScope.$on('$locationChangeStart', updateLocationModel);
-
-                // bind model to location.search params
-                deregistrationFroFunction = $rootScope.$watchCollection("locationModel", updateLocationSearch);
-            }
-
-            registrations++;
-
-            $scope.$on("$destroy", function() {
-
-                for (var param in scopeParamDefaults) {
-                    delete locationModel[param];
-                    delete paramDefaults[param];
-                }
-
-                registrations--;
-
-                if (registrations == 0) {
-                    deregistrationToFunction();
-                    deregistrationFroFunction();
-                }
-            });
-        }
-    };
-}])
-</code></pre>
-
-<p>Contracts:</p>
-
-<ul>
-<li>Child components should not define the same parameter names as a parent. If needed, use namespaces.</li>
-<li>Order of parameters is the order of register() invocations, but not guaranteed. This means navigation within an app generally has good order. But if a bookmark link is navigated to, the order of parameters may change upon navigation, though it won't add an extra navigation.</li>
-</ul>
-
-<h3>
-<a id="derived-goals" class="anchor" href="#derived-goals" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Derived Goals</h3>
-
-<ul>
-<li>Easy to learn and use, both internally (engineering) and externally (marketing)</li>
-</ul>
-
-<h3>
-<a id="derived-ungoals" class="anchor" href="#derived-ungoals" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Derived Ungoals</h3>
-
-<ul>
-<li>Internal application (non-URL) routing</li>
-<li>Parameter collision</li>
-<li>Complexity</li>
-</ul>
-
-<h3>
-<a id="best-practice" class="anchor" href="#best-practice" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Best Practice</h3>
-
-<ul>
-<li>Angular 1 allows you to create a standalone controller without a directive. This is especially notable when using the ngRoute module. For scalability reasons, and planning for Angular 2: All controllers should be in directives. This also enables use of the above easy routing and watchers, instead of ngView and ngRoute promises.</li>
-</ul>
-
-<hr>
-
-<h1>
-<a id="inheritance-patterns-in-javascript-and-some-python" class="anchor" href="#inheritance-patterns-in-javascript-and-some-python" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Inheritance patterns in JavaScript (and some Python)</h1>
-
-<h3>
-<a id="subclassing" class="anchor" href="#subclassing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>SubClassing</h3>
-
-<ul>
-<li>Traditional</li>
-<li>Computer Sciencey</li>
-<li>ES6 'class' keyword</li>
-<li>used below as "inheritance"</li>
-<li>
-<p>Example: Dogs and Cats are Animals. Dogs cannot meow(). Cats cannot bark().</p>
-
-<pre><code>var Animal = function(){};
-Animal.prototype = { walk: function(){} };
-
-var Dog = function(){};
-Dog.prototype = Object.create(Animal.prototype);
-Dog.prototype.bark = function(){};
-
-var Cat = function(){};
-Cat.prototype = Object.create(Animal.prototype);
-Cat.prototype.meow = function(){};
-
-var dog = new Dog;
-var cat = new Cat;
-
-dog instanceof Animal; // true
-dog instanceof Dog; // true
-dog instanceof Cat; // false
-
-dog.bark; // defined
-dog.meow; // not defined
-</code></pre>
-</li>
-</ul>
-
-<h3>
-<a id="subinstancing" class="anchor" href="#subinstancing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>SubInstancing</h3>
-
-<ul>
-<li>"Dynamic SubClassing"</li>
-<li>JQuery $.extend()</li>
-<li>ES6 Object.assign(), copying traits over</li>
-<li>used below as "mixin"</li>
-<li>
-<p>Example: Animals can be Dogs or Cats, given their traits of bark() and meow().</p>
-
-<pre><code>// from example above
-dog.meow = cat.meow;
-dog.meow; // Now defined. But conflicts with instanceof operator result of Cat.
-
-// use of mixins
-var dogMixin = { bark: function(){} };
-var catMixin = { meow: function(){} };
-
-var animal = { walk: function(){} };
-var dog = $.extend({}, animal, dogMixin);
-var cat = $.extend({}, animal, catMixin);
-
-dog.bark; // defined
-dog.meow; // not defined
-
-// The instanceof operator can't be used. Instead, error out or use duck-typing.
-</code></pre>
-</li>
-</ul>
-
-<h3>
-<a id="javascript-inheritance" class="anchor" href="#javascript-inheritance" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>JavaScript Inheritance</h3>
-
-<ul>
-<li>Everything's derived from Object, including Class and Instance</li>
-<li>Allows for SubInstances in addition to SubClasses</li>
-<li>Multiple inheritance by mixins, i.e. copy multiple traits over: works due to the two points above</li>
-</ul>
-
-<h3>
-<a id="python-inheritance-im-not-an-expert" class="anchor" href="#python-inheritance-im-not-an-expert" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Python Inheritance (I'm not an expert)</h3>
-
-<ul>
-<li>Class is separate from Instance</li>
-<li>Does not allow for SubInstances</li>
-<li>Multiple inheritance (for Class) is built into syntax</li>
-</ul>
-
-<h3>
-<a id="when-inheritance-breaks-down" class="anchor" href="#when-inheritance-breaks-down" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>When Inheritance breaks down</h3>
-
-<ul>
-<li>Deep inheritance hierarchies that create rigid dependencies that are very difficult to break when requirements change</li>
-<li>JavaScript's SubInstance flexibility may alleviate rigidity by providing crutches while the hierarchies are reworked, but this needs to be short-term only</li>
-<li>In Python, maybe preplan for retiring old things and starting anew</li>
-</ul>
-
-<h3>
-<a id="best-practice-1" class="anchor" href="#best-practice-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Best Practice</h3>
-
-<ul>
-<li>For scalability reasons, and the aforementioned breaking down: build shallow and wide, instead of deep and narrow. Favor composition over inheritance to do that.</li>
-</ul>
-
-<hr>
-
-<h1>
-<a id="inheritance-patterns-in-angular-14-from-scouring-the-web" class="anchor" href="#inheritance-patterns-in-angular-14-from-scouring-the-web" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Inheritance patterns in Angular 1.4 (from scouring the web)</h1>
-
-<h3>
-<a id="controllers" class="anchor" href="#controllers" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Controllers</h3>
-
-<p>Using inheritance and/or mixins:</p>
-
-<pre><code>angular.module('my.services', []).factory('myClass', function() {
-
-    var BaseController = function() {
-
-        this.modelDef = null;
-    };
-    BaseController.prototype.setupModel = function() {
-
-        var process = function(modelDef) {
-            // process modelDef into model
-        };
-        this.model = process(this.modelDef);
-    };
-
-    return {
-        BaseController: BaseController
-    };
-});
-
-angular.module('my.services', []).factory('myMixin', ['restData', function(restData) {
-
-    var tabulate = function() {
-        // tabulate the list-type models from this.modelDefs
-    };
-
-    var restify = function() {
-        // call back-end services via restData service
-    };
-
-    // no prototype functions
-    return {
-        tabulate: tabulate,
-        restify: restify
-    };
-}]);
-
-angular.module('my.directives', ['my.services'])
-    .directive('myReport', ['myClass', function(myClass) {
-
-        var SubController = function($filter, myMixin) {
-
-            myClass.BaseController.apply(this);
-
-            angular.extend(this, myMixin); // mix in to controller instance
-
-            this.modelDef = {
-                // set of model definitions
-            };
-            this.setupModel();
-        };
-        SubController.prototype = Object.create(myClass.BaseController.prototype);
-        SubController.$inject = ['$filter', 'myMixin'];
-
-        return {
-            scope: {
-                // scope props
-            },
-            templateUrl: '/path/file.html',
-
-            controller: SubController,
-            controllerAs: 'ctrl',
-            bindToController: true,
-
-            link: function ($scope, $element, $attrs) {
-                // do things
-            }
-        };
-    }]);
-</code></pre>
-
-<p>Decorator pattern:</p>
-
-<pre><code>angular.module('my', ['my.services'])
-    .decorator('$controller', ['myMixin', '$delegate', function (myMixin, $delegate) {
-
-        return function (constructor, locals) {
-
-            var controller = $delegate.apply(null, arguments);
-
-            return angular.extend(function () {
-
-                return angular.extend(controller(), myMixin); // mix in to controller instances
-
-                // one can also do things based on the type of 'constructor'
-
-            }, controller);
-        };
-    }]);
-</code></pre>
-
-<h3>
-<a id="services" class="anchor" href="#services" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Services</h3>
-
-<p>Using inheritance:</p>
-
-<pre><code>angular.module('my.services', []).factory('mySubClass', ['myClass', function() {
-
-    var SubController = function($filter) {
-
-        myClass.BaseController.apply(this);
-
-        this.modelDef = {
-            // set of model definitions
-        };
-        this.setupModel();
-    };
-    SubController.prototype = Object.create(myClass.BaseController.prototype);
-
-    return {
-        SubController: SubController
-    };
-}]);
-</code></pre>
-
-<p>Decorator pattern:</p>
-
-<pre><code>angular.module('my', [])
-    .decorator('myService', function ($delegate) {
-
-        return function() {
-            // do things
-            return $delegate();
-        }
-    });
-</code></pre>
-
-<h3>
-<a id="directives" class="anchor" href="#directives" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Directives</h3>
-
-<ul>
-<li>Using inheritance and/or mixins: By inheriting directive controllers as opposed to directives: see myReport directive above.</li>
-<li>Using the 'require' parameter in the directive definition, for directive controller dependencies.</li>
-<li>Directive wrapping: <a href="http://thaiat.github.io/blog/2014/03/10/extending-an-existing-directive-in-angularjs/">http://thaiat.github.io/blog/2014/03/10/extending-an-existing-directive-in-angularjs/</a>
-</li>
-</ul>
-
-<p>Decorator pattern:</p>
-
-<pre><code>angular.module('my', [])
-    .decorator('myReportDirective', function ($delegate) {
-
-        // do things
-        return $delegate;
-    });
-</code></pre>
-
-<p>Note: There is no $directive service like there is $controller (above), so you can't blanket all directives that way.</p>
-
-<hr>
-
-<h1>
-<a id="leveraging-the--prefixed-variable-hiding-in-angularjs" class="anchor" href="#leveraging-the--prefixed-variable-hiding-in-angularjs" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Leveraging the '$' prefixed variable hiding in AngularJS</h1>
-
-<h3>
-<a id="did-you-know" class="anchor" href="#did-you-know" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Did you know?</h3>
-
-<p>A "feature" of AngularJS is in hiding variables that have names beginning with '$'. These variables are ignored during watches, and that makes them useful for hiding your own information. Knowing this, one can set up a data model with the definition of the data in a '$def' variable. So running a watch on the data model will work as normal (and ignore changes in the $def variable). This enables easy augmentation of existing simple models to be more complex.</p>
-
-<h3>
-<a id="filters-example" class="anchor" href="#filters-example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Filters example</h3>
-
-<p>Simple model:</p>
-
-<pre><code>var model = {
-    product: 'analytics',
-    view: 'report',
-    sort: 'date',
-    searchText: 'abc'
-};
-</code></pre>
-
-<p>Complex model:</p>
-
-<pre><code>var model = {
-    product: 'analytics',
-    view: ['report'],
-    sort: ['date','name'],
-    searchText: 'abc',
-    date: {
-        starttime: 123,
-        endtime: 1234
-    },
-    $def: {
-        options: {
-            product: {
-                index: 0,
-                label: 'Product',
-                type: 'text'
-            },
-            view: {
-                index: 1,
-                label: 'View',
-                type: 'ListFilterCtrl',
-                $def: {
-                    options: {
-                        report: { index: 0, label: 'Report' },
-                        detail: { index: 1, label: 'Detail' }
-                    }
-                }
-            },
-            sort: {
-                index: 2,
-                label: 'Sort By',
-                type: 'ListFilterCtrl',
-                $def: {
-                    options: {
-                        date: { index: 0, label: 'Date' },
-                        name: { index: 1, label: 'Name' }
-                    }
-                }
-            },
-            searchText: {
-                index: 3,
-                label: 'Search Text',
-                type: 'text'
-            },
-            date: {
-                index: 4,
-                label: 'Date',
-                type: DateFilterCtrl
-            }
-        }
+<a id="tbd-incomplete-a-pattern-for-server-side-interaction-via-angularjs-using-the-client-side-patterns-mentioned" class="anchor" href="#tbd-incomplete-a-pattern-for-server-side-interaction-via-angularjs-using-the-client-side-patterns-mentioned" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>(TBD: incomplete) A pattern for server-side interaction via AngularJS using the client-side patterns mentioned</h1>
+
+<p>Set up $ctrl in params object for REST server call:</p>
+
+<pre><code>var $ctrl = params.$ctrl;
+if (!$ctrl) {
+    try {
+        $ctrl = { ngModel: params };
+        $ctrl = $controller(
+            "FilterCtrl",
+            { $scope: angular.extend($rootScope.$new(true), { $ctrl: $ctrl }) }
+        );
     }
-};
+    catch(e) {
+        $ctrl = null;
+    }
+}
+var custom = $ctrl &amp;&amp; $ctrl.customString();
+if (custom) {
+    newParams.custom = custom;
+}
 </code></pre>
 
 <hr>
 
 <h1>
-<a id="final-working-inheritance-pattern-in-angular-14" class="anchor" href="#final-working-inheritance-pattern-in-angular-14" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Final working inheritance pattern in Angular 1.4</h1>
+<a id="nov-2015-final-working-inheritance-pattern-in-angular-14" class="anchor" href="#nov-2015-final-working-inheritance-pattern-in-angular-14" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>(Nov 2015) Final working inheritance pattern in Angular 1.4</h1>
 
 <ul>
 <li>Remembering the basic tenet: Create no rigid hierarchies</li>
@@ -1405,28 +773,660 @@ angular.module('my.directives.dateFilter', ['my.directives.datepicker'])
 <hr>
 
 <h1>
-<a id="tbd" class="anchor" href="#tbd" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>TBD</h1>
+<a id="oct-2015-leveraging-the--prefixed-variable-hiding-in-angularjs" class="anchor" href="#oct-2015-leveraging-the--prefixed-variable-hiding-in-angularjs" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>(Oct 2015) Leveraging the '$' prefixed variable hiding in AngularJS</h1>
 
-<p>Set up $ctrl in params object for REST server call:</p>
+<h3>
+<a id="did-you-know" class="anchor" href="#did-you-know" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Did you know?</h3>
 
-<pre><code>var $ctrl = params.$ctrl;
-if (!$ctrl) {
-    try {
-        $ctrl = { ngModel: params };
-        $ctrl = $controller(
-            "FilterCtrl",
-            { $scope: angular.extend($rootScope.$new(true), { $ctrl: $ctrl }) }
-        );
-    }
-    catch(e) {
-        $ctrl = null;
-    }
-}
-var custom = $ctrl &amp;&amp; $ctrl.customString();
-if (custom) {
-    newParams.custom = custom;
-}
+<p>A "feature" of AngularJS is in hiding variables that have names beginning with '$'. These variables are ignored during watches, and that makes them useful for hiding your own information. Knowing this, one can set up a data model with the definition of the data in a '$def' variable. So running a watch on the data model will work as normal (and ignore changes in the $def variable). This enables easy augmentation of existing simple models to be more complex.</p>
+
+<h3>
+<a id="filters-example" class="anchor" href="#filters-example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Filters example</h3>
+
+<p>Simple model:</p>
+
+<pre><code>var model = {
+    product: 'analytics',
+    view: 'report',
+    sort: 'date',
+    searchText: 'abc'
+};
 </code></pre>
+
+<p>Complex model:</p>
+
+<pre><code>var model = {
+    product: 'analytics',
+    view: ['report'],
+    sort: ['date','name'],
+    searchText: 'abc',
+    date: {
+        starttime: 123,
+        endtime: 1234
+    },
+    $def: {
+        options: {
+            product: {
+                index: 0,
+                label: 'Product',
+                type: 'text'
+            },
+            view: {
+                index: 1,
+                label: 'View',
+                type: 'ListFilterCtrl',
+                $def: {
+                    options: {
+                        report: { index: 0, label: 'Report' },
+                        detail: { index: 1, label: 'Detail' }
+                    }
+                }
+            },
+            sort: {
+                index: 2,
+                label: 'Sort By',
+                type: 'ListFilterCtrl',
+                $def: {
+                    options: {
+                        date: { index: 0, label: 'Date' },
+                        name: { index: 1, label: 'Name' }
+                    }
+                }
+            },
+            searchText: {
+                index: 3,
+                label: 'Search Text',
+                type: 'text'
+            },
+            date: {
+                index: 4,
+                label: 'Date',
+                type: DateFilterCtrl
+            }
+        }
+    }
+};
+</code></pre>
+
+<hr>
+
+<h1>
+<a id="sep-2015-inheritance-patterns-in-angular-14-from-scouring-the-web" class="anchor" href="#sep-2015-inheritance-patterns-in-angular-14-from-scouring-the-web" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>(Sep 2015) Inheritance patterns in Angular 1.4 (from scouring the web)</h1>
+
+<h3>
+<a id="controllers" class="anchor" href="#controllers" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Controllers</h3>
+
+<p>Using inheritance and/or mixins:</p>
+
+<pre><code>angular.module('my.services', []).factory('myClass', function() {
+
+    var BaseController = function() {
+
+        this.modelDef = null;
+    };
+    BaseController.prototype.setupModel = function() {
+
+        var process = function(modelDef) {
+            // process modelDef into model
+        };
+        this.model = process(this.modelDef);
+    };
+
+    return {
+        BaseController: BaseController
+    };
+});
+
+angular.module('my.services', []).factory('myMixin', ['restData', function(restData) {
+
+    var tabulate = function() {
+        // tabulate the list-type models from this.modelDefs
+    };
+
+    var restify = function() {
+        // call back-end services via restData service
+    };
+
+    // no prototype functions
+    return {
+        tabulate: tabulate,
+        restify: restify
+    };
+}]);
+
+angular.module('my.directives', ['my.services'])
+    .directive('myReport', ['myClass', function(myClass) {
+
+        var SubController = function($filter, myMixin) {
+
+            myClass.BaseController.apply(this);
+
+            angular.extend(this, myMixin); // mix in to controller instance
+
+            this.modelDef = {
+                // set of model definitions
+            };
+            this.setupModel();
+        };
+        SubController.prototype = Object.create(myClass.BaseController.prototype);
+        SubController.$inject = ['$filter', 'myMixin'];
+
+        return {
+            scope: {
+                // scope props
+            },
+            templateUrl: '/path/file.html',
+
+            controller: SubController,
+            controllerAs: 'ctrl',
+            bindToController: true,
+
+            link: function ($scope, $element, $attrs) {
+                // do things
+            }
+        };
+    }]);
+</code></pre>
+
+<p>Decorator pattern:</p>
+
+<pre><code>angular.module('my', ['my.services'])
+    .decorator('$controller', ['myMixin', '$delegate', function (myMixin, $delegate) {
+
+        return function (constructor, locals) {
+
+            var controller = $delegate.apply(null, arguments);
+
+            return angular.extend(function () {
+
+                return angular.extend(controller(), myMixin); // mix in to controller instances
+
+                // one can also do things based on the type of 'constructor'
+
+            }, controller);
+        };
+    }]);
+</code></pre>
+
+<h3>
+<a id="services" class="anchor" href="#services" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Services</h3>
+
+<p>Using inheritance:</p>
+
+<pre><code>angular.module('my.services', []).factory('mySubClass', ['myClass', function() {
+
+    var SubController = function($filter) {
+
+        myClass.BaseController.apply(this);
+
+        this.modelDef = {
+            // set of model definitions
+        };
+        this.setupModel();
+    };
+    SubController.prototype = Object.create(myClass.BaseController.prototype);
+
+    return {
+        SubController: SubController
+    };
+}]);
+</code></pre>
+
+<p>Decorator pattern:</p>
+
+<pre><code>angular.module('my', [])
+    .decorator('myService', function ($delegate) {
+
+        return function() {
+            // do things
+            return $delegate();
+        }
+    });
+</code></pre>
+
+<h3>
+<a id="directives" class="anchor" href="#directives" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Directives</h3>
+
+<ul>
+<li>Using inheritance and/or mixins: By inheriting directive controllers as opposed to directives: see myReport directive above.</li>
+<li>Using the 'require' parameter in the directive definition, for directive controller dependencies.</li>
+<li>Directive wrapping: <a href="http://thaiat.github.io/blog/2014/03/10/extending-an-existing-directive-in-angularjs/">http://thaiat.github.io/blog/2014/03/10/extending-an-existing-directive-in-angularjs/</a>
+</li>
+</ul>
+
+<p>Decorator pattern:</p>
+
+<pre><code>angular.module('my', [])
+    .decorator('myReportDirective', function ($delegate) {
+
+        // do things
+        return $delegate;
+    });
+</code></pre>
+
+<p>Note: There is no $directive service like there is $controller (above), so you can't blanket all directives that way.</p>
+
+<hr>
+
+<h1>
+<a id="dec-2014-inheritance-patterns-in-javascript-and-some-python" class="anchor" href="#dec-2014-inheritance-patterns-in-javascript-and-some-python" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>(Dec 2014) Inheritance patterns in JavaScript (and some Python)</h1>
+
+<h3>
+<a id="subclassing" class="anchor" href="#subclassing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>SubClassing</h3>
+
+<ul>
+<li>Traditional</li>
+<li>Computer Sciencey</li>
+<li>ES6 'class' keyword</li>
+<li>used below as "inheritance"</li>
+<li>
+<p>Example: Dogs and Cats are Animals. Dogs cannot meow(). Cats cannot bark().</p>
+
+<pre><code>var Animal = function(){};
+Animal.prototype = { walk: function(){} };
+
+var Dog = function(){};
+Dog.prototype = Object.create(Animal.prototype);
+Dog.prototype.bark = function(){};
+
+var Cat = function(){};
+Cat.prototype = Object.create(Animal.prototype);
+Cat.prototype.meow = function(){};
+
+var dog = new Dog;
+var cat = new Cat;
+
+dog instanceof Animal; // true
+dog instanceof Dog; // true
+dog instanceof Cat; // false
+
+dog.bark; // defined
+dog.meow; // not defined
+</code></pre>
+</li>
+</ul>
+
+<h3>
+<a id="subinstancing" class="anchor" href="#subinstancing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>SubInstancing</h3>
+
+<ul>
+<li>"Dynamic SubClassing"</li>
+<li>JQuery $.extend()</li>
+<li>ES6 Object.assign(), copying traits over</li>
+<li>used below as "mixin"</li>
+<li>
+<p>Example: Animals can be Dogs or Cats, given their traits of bark() and meow().</p>
+
+<pre><code>// from example above
+dog.meow = cat.meow;
+dog.meow; // Now defined. But conflicts with instanceof operator result of Cat.
+
+// use of mixins
+var dogMixin = { bark: function(){} };
+var catMixin = { meow: function(){} };
+
+var animal = { walk: function(){} };
+var dog = $.extend({}, animal, dogMixin);
+var cat = $.extend({}, animal, catMixin);
+
+dog.bark; // defined
+dog.meow; // not defined
+
+// The instanceof operator can't be used. Instead, error out or use duck-typing.
+</code></pre>
+</li>
+</ul>
+
+<h3>
+<a id="javascript-inheritance" class="anchor" href="#javascript-inheritance" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>JavaScript Inheritance</h3>
+
+<ul>
+<li>Everything's derived from Object, including Class and Instance</li>
+<li>Allows for SubInstances in addition to SubClasses</li>
+<li>Multiple inheritance by mixins, i.e. copy multiple traits over: works due to the two points above</li>
+</ul>
+
+<h3>
+<a id="python-inheritance-im-not-an-expert" class="anchor" href="#python-inheritance-im-not-an-expert" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Python Inheritance (I'm not an expert)</h3>
+
+<ul>
+<li>Class is separate from Instance</li>
+<li>Does not allow for SubInstances</li>
+<li>Multiple inheritance (for Class) is built into syntax</li>
+</ul>
+
+<h3>
+<a id="when-inheritance-breaks-down" class="anchor" href="#when-inheritance-breaks-down" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>When Inheritance breaks down</h3>
+
+<ul>
+<li>Deep inheritance hierarchies that create rigid dependencies that are very difficult to break when requirements change</li>
+<li>JavaScript's SubInstance flexibility may alleviate rigidity by providing crutches while the hierarchies are reworked, but this needs to be short-term only</li>
+<li>In Python, maybe preplan for retiring old things and starting anew</li>
+</ul>
+
+<h3>
+<a id="best-practice" class="anchor" href="#best-practice" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Best Practice</h3>
+
+<ul>
+<li>For scalability reasons, and the aforementioned breaking down: build shallow and wide, instead of deep and narrow. Favor composition over inheritance to do that.</li>
+</ul>
+
+<hr>
+
+<p><img src="http://raviolibhat.github.io/SantaPoitras1.jpg" alt="funny"></p>
+
+<h1>
+<a id="dec-2013-easy-url-hash-routing-with-angularjs" class="anchor" href="#dec-2013-easy-url-hash-routing-with-angularjs" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>(Dec 2013) Easy URL Hash Routing with AngularJS</h1>
+
+<h3>
+<a id="goals" class="anchor" href="#goals" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Goals</h3>
+
+<ul>
+<li>URL Hash Routing Service</li>
+<li>Drive web application state from the URL</li>
+</ul>
+
+<h3>
+<a id="why" class="anchor" href="#why" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Why?</h3>
+
+<ul>
+<li>Browsing within a Single Page Application</li>
+<li>Supporting browser back, forward, refresh buttons</li>
+<li>Bookmarking and linking from other pages</li>
+</ul>
+
+<h3>
+<a id="when" class="anchor" href="#when" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>When?</h3>
+
+<p>2013, supporting older Internet Explorer versions</p>
+
+<h3>
+<a id="what" class="anchor" href="#what" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>What?</h3>
+
+<p>Existing options at the time:</p>
+
+<ul>
+<li>ngRoute module</li>
+<li>External ui-router package</li>
+<li>Leveraging $location (the winner)</li>
+<li>Vanilla JavaScript, non-Angular</li>
+</ul>
+
+<h3>
+<a id="how" class="anchor" href="#how" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How?</h3>
+
+<p>Supporting older browsers means no HTML5 History API...</p>
+
+<p>Basic URL format:</p>
+
+<p><code>http://host/path#?param1=value1&amp;param2=value2&amp;paramN=valueN</code></p>
+
+<p>Examples:</p>
+
+<ul>
+<li><code>?product=analytics</code></li>
+<li><code>?product=analytics&amp;view=report</code></li>
+<li><code>?product=analytics&amp;view=report&amp;sort=date</code></li>
+<li><code>?product=analytics&amp;view=detail</code></li>
+<li><code>?product=finance&amp;view=detail</code></li>
+<li><code>?product=finance&amp;view=detail&amp;filter=abc</code></li>
+</ul>
+
+<p>Entities:</p>
+
+<ul>
+<li>Location model: contains the name/value pairs</li>
+<li>Root scope: contains the Location model</li>
+<li>Location service: Built on $location, exposes a register() API</li>
+<li>Child scopes</li>
+</ul>
+
+<p>Components (directives) that use browser navigation, define URL parameters by using the Location service's register().
+All bindings to such parameters by any component are done on the Location model.
+Example actions:</p>
+
+<ul>
+<li>
+<p>Switch views based on URL parameter 'view': ng-switch on $root.locationModel.view, target 'report' vs 'detail' etc.</p>
+
+<pre><code>&lt;div ng-switch="$root.locationModel.view"&gt;
+    &lt;overview ng-switch-when="overview"&gt;&lt;/overview&gt;
+    &lt;report ng-switch-when="report"&gt;&lt;/report&gt;
+    &lt;detail ng-switch-when="detail"&gt;&lt;/detail&gt;
+&lt;/div&gt;
+</code></pre>
+</li>
+<li>
+<p>Set sort column indication on a detail table: ng-class on $root.locationModel.sort</p>
+
+<pre><code>&lt;div ng-class="{'sorted-col': col==$root.locationModel.sort}"&gt;&lt;/div&gt;
+</code></pre>
+</li>
+<li>
+<p>More complex actions: $watch a subset of parameters in $root.locationModel</p>
+
+<pre><code>$scope.$watch(
+    function() {
+        var locationModel = angular.copy($rootScope.locationModel);
+        delete locationModel.filter;
+        delete locationModel.sort;
+
+        return locationModel;
+    },
+    function() {
+        // do things independent of a filter or sorting change
+    },
+    true
+);
+</code></pre>
+</li>
+</ul>
+
+<p>When components are destroyed, any parameters they defined are removed from locationModel automatically.
+URL parameters with default values, set with register(), are hidden from the URL.</p>
+
+<p>Code:</p>
+
+<pre><code>// used to provide browser history support: two-way binds the location params with a model
+angular.module('my.services', []).factory('myLocation', ['$rootScope', '$location', function($rootScope, $location) {
+
+    var locationModel = {};
+    $rootScope.locationModel = locationModel;
+
+    var paramDefaults = {};
+
+    var updateLocationModel = function() {
+
+        var locationParams = $location.search();
+
+        // take location params and update the model, setting defaults as needed
+        for (var param in paramDefaults) {
+
+            if (param in locationParams) {
+                if (typeof paramDefaults[param] == "number") {
+                    locationModel[param] = parseInt(locationParams[param]);
+                }
+                else {
+                    locationModel[param] = locationParams[param];
+                }
+            }
+            else {
+                locationModel[param] = paramDefaults[param];
+            }
+        }
+
+        // copy any remaining non-default location params
+        for (var param in locationParams) {
+
+            if (!(param in paramDefaults)) {
+                locationModel[param] = locationParams[param];
+            }
+        }
+    };
+
+    var updateLocationSearch = function() {
+
+        var replaceLocation = true;
+        var oldLocationParams = $location.search();
+        var locationParams = {};
+
+        // only include non-default parameters in location.search
+        for (var param in paramDefaults) {
+
+            if (locationModel[param] != paramDefaults[param]) {
+                locationParams[param] = locationModel[param];
+
+                if (locationParams[param] != oldLocationParams[param]) {
+                    replaceLocation = false;
+                }
+            }
+        }
+
+        // also include any remaining params
+        for (var param in locationModel) {
+
+            if (!(param in paramDefaults)) {
+                locationParams[param] = locationModel[param];
+
+                if (locationParams[param] != oldLocationParams[param]) {
+                    replaceLocation = false;
+                }
+            }
+        }
+
+        if (Object.keys(locationParams).length == 0) {
+            // prevent an infinite digest (see Angular issues 9635 and 10228)
+            // ...remove after Angular upgrade fixes bug.
+            return;
+        }
+
+        if (replaceLocation) {
+            $location.replace();
+        }
+
+        $location.search(locationParams);
+    };
+
+    var registrations = 0;
+    var deregistrationToFunction = null;
+    var deregistrationFroFunction = null;
+
+    return {
+
+        register: function($scope, scopeParamDefaults) {
+
+            angular.extend(paramDefaults, scopeParamDefaults);
+
+            updateLocationModel();
+
+            if (registrations == 0) {
+                // bind location.search params to model
+                deregistrationToFunction = $rootScope.$on('$locationChangeStart', updateLocationModel);
+
+                // bind model to location.search params
+                deregistrationFroFunction = $rootScope.$watchCollection("locationModel", updateLocationSearch);
+            }
+
+            registrations++;
+
+            $scope.$on("$destroy", function() {
+
+                for (var param in scopeParamDefaults) {
+                    delete locationModel[param];
+                    delete paramDefaults[param];
+                }
+
+                registrations--;
+
+                if (registrations == 0) {
+                    deregistrationToFunction();
+                    deregistrationFroFunction();
+                }
+            });
+        }
+    };
+}])
+</code></pre>
+
+<p>Contracts:</p>
+
+<ul>
+<li>Child components should not define the same parameter names as a parent. If needed, use namespaces.</li>
+<li>Order of parameters is the order of register() invocations, but not guaranteed. This means navigation within an app generally has good order. But if a bookmark link is navigated to, the order of parameters may change upon navigation, though it won't add an extra navigation.</li>
+</ul>
+
+<h3>
+<a id="derived-goals" class="anchor" href="#derived-goals" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Derived Goals</h3>
+
+<ul>
+<li>Easy to learn and use, both internally (engineering) and externally (marketing)</li>
+</ul>
+
+<h3>
+<a id="derived-ungoals" class="anchor" href="#derived-ungoals" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Derived Ungoals</h3>
+
+<ul>
+<li>Internal application (non-URL) routing</li>
+<li>Parameter collision</li>
+<li>Complexity</li>
+</ul>
+
+<h3>
+<a id="best-practice-1" class="anchor" href="#best-practice-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Best Practice</h3>
+
+<ul>
+<li>Angular 1 allows you to create a standalone controller without a directive. This is especially notable when using the ngRoute module. For scalability reasons, and planning for Angular 2: All controllers should be in directives. This also enables use of the above easy routing and watchers, instead of ngView and ngRoute promises.</li>
+</ul>
+
+<hr>
+
+<h1>
+<a id="jan-2013-fiddle-fingers" class="anchor" href="#jan-2013-fiddle-fingers" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>(Jan 2013) Fiddle Fingers</h1>
+
+<h3>
+<a id="history" class="anchor" href="#history" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>History</h3>
+
+<ul>
+<li>Invented by me in 2002</li>
+<li>Result of an internal contest at Xilinx, a semiconductor company</li>
+</ul>
+
+<h3>
+<a id="inputs" class="anchor" href="#inputs" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Inputs</h3>
+
+<ul>
+<li>4 finger-buttons</li>
+<li>1 reset</li>
+<li>1 on-board 555 clock</li>
+</ul>
+
+<h3>
+<a id="outputs" class="anchor" href="#outputs" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Outputs</h3>
+
+<ul>
+<li>4 level-LEDs</li>
+<li>4 value-LEDs</li>
+<li>1 7-segment score display</li>
+</ul>
+
+<h3>
+<a id="description" class="anchor" href="#description" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Description</h3>
+
+<p>Fiddle Fingers is designed to be used in child development centers, handicapped rehabilitation centers or simply as a toy for all ages. It is a game that tests finger-eye reflex coordination. The game consists of four buttons that the player places their four fingers on, which excludes the thumb.  When the game is started, one LED in four, lights up.  The player then depresses
+the finger that corresponds to the LED.  Then, the lit LED turns off and another one lights up. The player has to then depress that LED button and no other finger.  This process is repeated and gets faster and faster.</p>
+
+<p>The aim is to be quick at pressing the button corresponding to the LED that is on.  This tests the player's eye-finger reflex speed.  It is a good tool to improve the coordination of misfortunate disabled people who suffer with respect to hand-eye coordination.</p>
+
+<p>A display of four LEDs shows the player what level they have achieved.  There are five LEDs. The game starts with none of the four LEDs lit up, hence level 0.  Then 1 lights up as the speed increases, then another and so on till all four are lit up.  Once this level is completed the game stops. It should be very difficult if not impossible to get to this stage.</p>
+
+<p>Another display which is a 7-segment display shows the player's current score.  This is a count of how many LED presses the player has missed.  When this reaches six the game ends. Hence, the best player has the least score, and the highest level.</p>
+
+<p>Possible future modifications are increasing the score limit, cycling through the levels to attain more levels, changing the initial start speed of the game etc.</p>
+
+<h3>
+<a id="patent-application" class="anchor" href="#patent-application" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Patent Application</h3>
+
+<p><a href="http://raviolibhat.github.io/patent_figs.pdf">figs</a></p>
 
       <footer class="site-footer">
 
