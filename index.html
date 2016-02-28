@@ -349,7 +349,7 @@ angular.module('my.services', []).factory('myLocation', ['$rootScope', '$locatio
 <hr>
 
 <h1>
-<a id="inheritance-patterns-in-javascript-and-angularjs-and-some-python" class="anchor" href="#inheritance-patterns-in-javascript-and-angularjs-and-some-python" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Inheritance patterns in JavaScript and AngularJS (and some Python)</h1>
+<a id="inheritance-patterns-in-javascript-and-some-python" class="anchor" href="#inheritance-patterns-in-javascript-and-some-python" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Inheritance patterns in JavaScript (and some Python)</h1>
 
 <h3>
 <a id="subclassing" class="anchor" href="#subclassing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>SubClassing</h3>
@@ -391,8 +391,8 @@ dog.meow; // not defined
 
 <ul>
 <li>"Dynamic SubClassing"</li>
-<li>Uses angular.extend(), copying traits over</li>
-<li>ES6 Object.assign()</li>
+<li>JQuery $.extend()</li>
+<li>ES6 Object.assign(), copying traits over</li>
 <li>used below as "mixin"</li>
 <li>
 <p>Example: Animals can be Dogs or Cats, given their traits of bark() and meow().</p>
@@ -406,8 +406,8 @@ var dogMixin = { bark: function(){} };
 var catMixin = { meow: function(){} };
 
 var animal = { walk: function(){} };
-var dog = angular.extend({}, animal, dogMixin);
-var cat = angular.extend({}, animal, catMixin);
+var dog = $.extend({}, animal, dogMixin);
+var cat = $.extend({}, animal, catMixin);
 
 dog.bark; // defined
 dog.meow; // not defined
@@ -416,6 +416,45 @@ dog.meow; // not defined
 </code></pre>
 </li>
 </ul>
+
+<h3>
+<a id="javascript-inheritance" class="anchor" href="#javascript-inheritance" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>JavaScript Inheritance</h3>
+
+<ul>
+<li>Everything's derived from Object, including Class and Instance</li>
+<li>Allows for SubInstances in addition to SubClasses</li>
+<li>Multiple inheritance by mixins, i.e. copy multiple traits over: works due to the two points above</li>
+</ul>
+
+<h3>
+<a id="python-inheritance-im-not-an-expert" class="anchor" href="#python-inheritance-im-not-an-expert" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Python Inheritance (I'm not an expert)</h3>
+
+<ul>
+<li>Class is separate from Instance</li>
+<li>Does not allow for SubInstances</li>
+<li>Multiple inheritance (for Class) is built into syntax</li>
+</ul>
+
+<h3>
+<a id="when-inheritance-breaks-down" class="anchor" href="#when-inheritance-breaks-down" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>When Inheritance breaks down</h3>
+
+<ul>
+<li>Deep inheritance hierarchies that create rigid dependencies that are very difficult to break when requirements change</li>
+<li>JavaScript's SubInstance flexibility may alleviate rigidity by providing crutches while the hierarchies are reworked, but this needs to be short-term only</li>
+<li>In Python, maybe preplan for retiring old things and starting anew</li>
+</ul>
+
+<h3>
+<a id="best-practice-1" class="anchor" href="#best-practice-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Best Practice</h3>
+
+<ul>
+<li>For scalability reasons, and the aforementioned breaking down: build shallow and wide, instead of deep and narrow. Favor composition over inheritance to do that.</li>
+</ul>
+
+<hr>
+
+<h1>
+<a id="inheritance-patterns-in-angular-14-from-scouring-the-web" class="anchor" href="#inheritance-patterns-in-angular-14-from-scouring-the-web" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Inheritance patterns in Angular 1.4 (from scouring the web)</h1>
 
 <h3>
 <a id="controllers" class="anchor" href="#controllers" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Controllers</h3>
@@ -570,40 +609,6 @@ angular.module('my.directives', ['my.services'])
 
 <p>Note: There is no $directive service like there is $controller (above), so you can't blanket all directives that way.</p>
 
-<h3>
-<a id="javascript-inheritance" class="anchor" href="#javascript-inheritance" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>JavaScript Inheritance</h3>
-
-<ul>
-<li>Everything's derived from Object, including Class and Instance</li>
-<li>Allows for SubInstances in addition to SubClasses</li>
-<li>Multiple inheritance by mixins, i.e. copy multiple traits over: works due to the two points above</li>
-</ul>
-
-<h3>
-<a id="python-inheritance-im-not-an-expert" class="anchor" href="#python-inheritance-im-not-an-expert" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Python Inheritance (I'm not an expert)</h3>
-
-<ul>
-<li>Class is separate from Instance</li>
-<li>Does not allow for SubInstances</li>
-<li>Multiple inheritance (for Class) is built into syntax</li>
-</ul>
-
-<h3>
-<a id="when-inheritance-breaks-down" class="anchor" href="#when-inheritance-breaks-down" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>When Inheritance breaks down</h3>
-
-<ul>
-<li>Deep inheritance hierarchies that create rigid dependencies that are very difficult to break when requirements change</li>
-<li>JavaScript's SubInstance flexibility may alleviate rigidity by providing crutches while the hierarchies are reworked, but this needs to be short-term only</li>
-<li>In Python, maybe preplan for retiring old things and starting anew</li>
-</ul>
-
-<h3>
-<a id="best-practice-1" class="anchor" href="#best-practice-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Best Practice</h3>
-
-<ul>
-<li>For scalability reasons, and the aforementioned breaking down: build shallow and wide, instead of deep and narrow. Favor composition over inheritance to do that.</li>
-</ul>
-
 <hr>
 
 <h1>
@@ -612,7 +617,7 @@ angular.module('my.directives', ['my.services'])
 <h3>
 <a id="did-you-know" class="anchor" href="#did-you-know" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Did you know?</h3>
 
-<p>A "feature" of AngularJS is in hiding variables with names that being with '$'. These variables are ignored during watches, and that makes them useful for hiding your own information. Knowing this, one can set up a data model with the definition of the data in a '$def' variable, and a '$ctrl' variable for the data model's controller instance. So running a watch on the data model will work as normal (and ignore changes in the $def and $ctrl variables). This enables easy augmentation of existing simple models to be more complex.</p>
+<p>A "feature" of AngularJS is in hiding variables that have names beginning with '$'. These variables are ignored during watches, and that makes them useful for hiding your own information. Knowing this, one can set up a data model with the definition of the data in a '$def' variable. So running a watch on the data model will work as normal (and ignore changes in the $def variable). This enables easy augmentation of existing simple models to be more complex.</p>
 
 <h3>
 <a id="filters-example" class="anchor" href="#filters-example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Filters example</h3>
@@ -681,6 +686,20 @@ angular.module('my.directives', ['my.services'])
     }
 };
 </code></pre>
+
+<hr>
+
+<h1>
+<a id="final-working-inheritance-pattern-in-angular-14" class="anchor" href="#final-working-inheritance-pattern-in-angular-14" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Final working inheritance pattern in Angular 1.4</h1>
+
+<ul>
+<li>Remembering the basic tenet: Create no rigid hierarchies</li>
+<li>Makes further use of the '$' prefixed variable hiding</li>
+<li>Angular's $controller service is used to instantiate a controller</li>
+<li>Controller instance is stored in $ctrl in the model</li>
+<li>wrapObject() to force setting a subInstance property to instead set the parent's property (like an ES6 Proxy setter, but in ES5)</li>
+<li>Note: ngModel interface used to follow common model paradigm</li>
+</ul>
 
 <p>myExtend service:</p>
 
@@ -1382,6 +1401,11 @@ angular.module('my.directives.dateFilter', ['my.directives.datepicker'])
         return ctrl;
     }]);
 </code></pre>
+
+<hr>
+
+<h1>
+<a id="tbd" class="anchor" href="#tbd" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>TBD</h1>
 
 <p>Set up $ctrl in params object for REST server call:</p>
 
