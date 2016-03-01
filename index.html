@@ -64,7 +64,7 @@ if (custom) {
 <ul>
 <li>Makes further use of the '$' prefixed variable hiding</li>
 <li>Angular's $controller service is used to instantiate a controller</li>
-<li>Controller's instance reference is in $ctrl</li>
+<li>Controller's instance (hierarchical) reference is in $ctrl</li>
 <li>Directive used essentially as a generic Component passed only its model w/ definition, additionally storing $ctrl</li>
 <li>wrapObject() to force setting a subInstance property to instead set the parent's property (like an ES6 Proxy setter, but in ES5)</li>
 <li>subController() does the magic</li>
